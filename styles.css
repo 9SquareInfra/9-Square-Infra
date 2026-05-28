@@ -273,17 +273,17 @@ button, input, select, textarea {
 .navbar .logo {
     display: flex;
     align-items: center;
-    height: 50px;
-    width: 150px;
+    height: 45px;
+    width: 110px;
     position: relative;
     transition: var(--transition-quick);
 }
 
 .navbar .brand-logo-img {
-    height: 150px;
+    height: 110px;
     width: auto;
     position: absolute;
-    top: -20px;
+    top: -15px;
     left: 0;
     object-fit: contain;
     filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.6));
@@ -292,8 +292,8 @@ button, input, select, textarea {
 }
 
 .navbar.scrolled .brand-logo-img {
-    height: 80px;
-    top: -10px;
+    height: 68px;
+    top: -8px;
 }
 
 .navbar .logo:hover .brand-logo-img {
