@@ -273,59 +273,20 @@ button, input, select, textarea {
 .logo {
     display: flex;
     align-items: center;
-    gap: 0.8rem;
+    transition: var(--transition-quick);
 }
 
-.logo-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 3px;
-    width: 24px;
-    height: 24px;
-}
-
-.logo-grid span {
-    width: 6px;
-    height: 6px;
-    background-color: var(--text-primary);
-    border-radius: 1px;
+.brand-logo-img {
+    height: 48px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
     transition: var(--transition-smooth);
 }
 
-.logo-grid span.gold {
-    background-color: var(--color-gold);
-    box-shadow: 0 0 8px var(--color-gold);
-}
-
-.logo:hover .logo-grid span:not(.gold) {
-    background-color: var(--color-teal);
-    transform: scale(0.9);
-}
-
-.logo:hover .logo-grid span.gold {
-    transform: rotate(45deg) scale(1.1);
-}
-
-.logo-text {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.1;
-}
-
-.brand-name {
-    font-family: var(--font-heading);
-    font-weight: 800;
-    font-size: 1.15rem;
-    letter-spacing: 0.05em;
-    color: var(--text-primary);
-}
-
-.brand-sub {
-    font-family: var(--font-heading);
-    font-weight: 400;
-    font-size: 0.75rem;
-    letter-spacing: 0.4em;
-    color: var(--color-gold);
+.logo:hover .brand-logo-img {
+    transform: scale(1.04);
+    filter: drop-shadow(0 0 15px rgba(201, 160, 84, 0.3));
 }
 
 /* Menu Links */
