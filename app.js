@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- HERO TYPEWRITER EFFECT ---
     const typewriterElement = document.getElementById('typewriter');
-    const phrases = ["3D Elevations", "Interiors 3D Plans", "3D Room Designs", "3D Walkthroughs"];
+    const phrases = ["3D Elevations", "Interior Designs", "3D Room Designs", "3D Walkthroughs"];
     let phraseIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
@@ -408,7 +408,7 @@ document.addEventListener('DOMContentLoaded', () => {
         requirementsString += `- Area: ${parseInt(areaSlider.value).toLocaleString('en-IN')} Sq. Ft.\n`;
         requirementsString += `- Services Requested:\n`;
         
-        if (chkPlans.checked) requirementsString += `  • Interiors 3D Plans\n`;
+        if (chkPlans.checked) requirementsString += `  • Interior Designs\n`;
         if (chkElevations.checked) requirementsString += `  • 3D Elevations Facade\n`;
         if (chkDesigns.checked) requirementsString += `  • 3D Room Concept Designs\n`;
         if (chkWalkthroughs.checked) requirementsString += `  • Cinematic 3D VR Walkthroughs\n`;
