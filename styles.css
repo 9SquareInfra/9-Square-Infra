@@ -228,6 +228,33 @@ button, input, select, textarea {
     border-color: var(--color-teal);
 }
 
+.btn-whatsapp {
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    color: #ffffff;
+    padding: 0.9rem 2rem;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.25);
+    transition: var(--transition-smooth);
+}
+
+.btn-whatsapp:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.45);
+    color: #ffffff;
+    filter: brightness(1.05);
+}
+
+.btn-whatsapp:active {
+    transform: translateY(0);
+}
+
 .btn-large {
     padding: 1.1rem 2.4rem;
     font-size: 1.05rem;

@@ -621,6 +621,21 @@ document.addEventListener('DOMContentLoaded', () => {
             // Open Success Screen Modal
             successModal.classList.add('active');
             
+            // WhatsApp Click to Chat Redirection
+            const primaryNumber = "919948699399";
+            let messageText = `*New Inquiry - 9 Square Infra*\n\n`;
+            messageText += `*Client Name:* ${clientName.value.trim()}\n`;
+            messageText += `*Phone:* ${clientPhone.value.trim()}\n`;
+            messageText += `*Email:* ${clientEmail.value.trim()}\n`;
+            messageText += `*Property Category:* ${projectTypeSelect.options[projectTypeSelect.selectedIndex].text}\n\n`;
+            
+            if (projectRequirementsTextarea.value.trim()) {
+                messageText += `*Requirements / Estimator Selections:*\n${projectRequirementsTextarea.value.trim()}\n`;
+            }
+            
+            const whatsAppUrl = `https://wa.me/${primaryNumber}?text=${encodeURIComponent(messageText)}`;
+            window.open(whatsAppUrl, '_blank');
+            
             // Clear all fields
             consultForm.reset();
             document.querySelectorAll('.form-group').forEach(grp => grp.classList.remove('invalid'));
