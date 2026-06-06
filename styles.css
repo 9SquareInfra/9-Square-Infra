@@ -1820,6 +1820,11 @@ button, input, select, textarea {
     cursor: pointer;
 }
 
+.input-wrapper select option {
+    color: #000000;
+    background-color: #ffffff;
+}
+
 /* validation rules styles */
 .form-group.invalid input {
     border-color: #ef4444;
