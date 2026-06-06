@@ -2572,6 +2572,89 @@ button, input, select, textarea {
     margin: 5rem 0 3rem 0;
 }
 
+/* --- FLOATING WHATSAPP BUTTON --- */
+.whatsapp-float {
+    position: fixed;
+    bottom: 2.5rem;
+    right: 2.5rem;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.45);
+    z-index: 999;
+    transition: var(--transition-smooth);
+    animation: whatsapp-pulse 2.5s infinite;
+}
+
+.whatsapp-float:hover {
+    transform: scale(1.1) rotate(10deg);
+    box-shadow: 0 8px 30px rgba(37, 211, 102, 0.65);
+    color: #ffffff;
+}
+
+.whatsapp-float i {
+    transition: var(--transition-quick);
+}
+
+/* Tooltip style */
+.whatsapp-tooltip {
+    position: absolute;
+    right: 75px;
+    background-color: #10141a;
+    color: var(--text-primary);
+    border: 1px solid var(--border-glass-light);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(10px);
+    transition: var(--transition-smooth);
+    box-shadow: var(--shadow-glow);
+}
+
+/* Tooltip arrow pointer */
+.whatsapp-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    transform: translateY(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent transparent transparent #10141a;
+}
+
+.whatsapp-float:hover .whatsapp-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+@keyframes whatsapp-pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 4px 20px rgba(37, 211, 102, 0.45);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 8px 25px rgba(37, 211, 102, 0.65), 0 0 0 10px rgba(37, 211, 102, 0.15);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 4px 20px rgba(37, 211, 102, 0.45);
+    }
+}
+
 /* --- HIGH ACCURACY MEDIA QUERIES (RESPONSIVENESS) --- */
 
 @media (max-width: 1200px) {
@@ -2823,6 +2906,18 @@ button, input, select, textarea {
     
     .modal-body-visual {
         padding: 1rem;
+    }
+    
+    /* WhatsApp Floating Button Mobile Overrides */
+    .whatsapp-float {
+        bottom: 1.5rem;
+        right: 1.5rem;
+        width: 52px;
+        height: 52px;
+        font-size: 1.8rem;
+    }
+    .whatsapp-tooltip {
+        display: none !important;
     }
 }
 
