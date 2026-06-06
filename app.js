@@ -634,6 +634,31 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             const whatsAppUrl = `https://wa.me/${primaryNumber}?text=${encodeURIComponent(messageText)}`;
+            
+            // Google Sheets Integration
+            const googleSheetUrl = ""; // TODO: Paste your Google Apps Script Web App URL here
+            
+            if (googleSheetUrl && googleSheetUrl !== "") {
+                const sheetData = {
+                    timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+                    name: clientName.value.trim(),
+                    phone: clientPhone.value.trim(),
+                    email: clientEmail.value.trim(),
+                    category: projectTypeSelect.options[projectTypeSelect.selectedIndex].text,
+                    requirements: projectRequirementsTextarea.value.trim(),
+                    budget: `₹${feeVal.textContent}`
+                };
+                
+                fetch(googleSheetUrl, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(sheetData)
+                }).catch(err => console.error("Google Sheets save error:", err));
+            }
+            
             window.open(whatsAppUrl, '_blank');
             
             // Clear all fields
