@@ -2446,13 +2446,13 @@ button, input, select, textarea {
 /* --- COMPREHENSIVE SERVICES GRID --- */
 .services-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2.5rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
     margin-top: 3rem;
 }
 
 .service-card {
-    padding: 3rem;
+    padding: 2rem;
     border-radius: 24px;
     background: var(--bg-glass);
     border: 1px solid var(--border-glass-light);
@@ -2579,6 +2579,11 @@ button, input, select, textarea {
         padding: 6rem 2rem;
     }
     
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+    
     .hero-title {
         font-size: 3.5rem;
     }
@@ -2674,13 +2679,8 @@ button, input, select, textarea {
         height: 120px;
     }
     
-    .services-grid {
-        grid-template-columns: 1fr;
-        gap: 1.8rem;
-    }
-    
     .service-card {
-        padding: 2.2rem;
+        padding: 1.8rem;
     }
     
     /* Service blocks stack vertically */
@@ -2780,6 +2780,11 @@ button, input, select, textarea {
     
     .service-title {
         font-size: 1.8rem;
+    }
+    
+    .services-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
     }
     
     .property-cards {
