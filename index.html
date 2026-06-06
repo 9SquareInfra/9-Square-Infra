@@ -33,7 +33,7 @@
                 <a href="#philosophy" class="nav-link">Philosophy</a>
                 <a href="#services" class="nav-link">Services</a>
                 <a href="#estimator" class="nav-link">Estimator</a>
-                <a href="#testimonials" class="nav-link">Portfolio</a>
+                <a href="portal.html" class="nav-link" target="_blank" style="color: var(--gold); border: 1px solid rgba(212,175,55,0.25); border-radius: 6px; padding: 4px 10px; margin-left: 8px;"><i class="fa-solid fa-house-laptop"></i> Operations Portal</a>
                 <a href="#contact" class="btn-primary nav-btn">Get Consultation</a>
             </nav>
 
@@ -393,6 +393,54 @@
                 </div>
             </div>
 
+            <!-- SERVICE 5: PLAN APPROVALS -->
+            <div class="service-block design-left">
+                <div class="service-info">
+                    <div class="service-num">05</div>
+                    <h3 class="service-title">Plan Approvals</h3>
+                    <p class="service-description">
+                        Securing government approvals and building sanctions doesn't have to be a bottleneck. We create fully compliant drawing sets, site maps, and structural layouts prepared in strict accordance with municipal corporation bylaws to guarantee fast clearances.
+                    </p>
+                    <ul class="walkthrough-features">
+                        <li><i class="fa-solid fa-stamp gold"></i> Municipal corporation sanction drawing sets</li>
+                        <li><i class="fa-solid fa-compass gold"></i> Regulatory zoning & building bylaws compliance</li>
+                        <li><i class="fa-solid fa-file-invoice gold"></i> Fast-track document preparation for quick approvals</li>
+                    </ul>
+                </div>
+                
+                <div class="service-visual">
+                    <div class="visual-wrapper glass-panel">
+                        <img src="assets/images/plan_approvals.png" alt="Plan Approvals Blueprint drawing set" class="visual-img">
+                        <div class="visual-glow"></div>
+                        <div class="visual-badge"><i class="fa-solid fa-stamp"></i> Approval-ready documentation</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SERVICE 6: 2D PLANS -->
+            <div class="service-block design-right">
+                <div class="service-visual">
+                    <div class="visual-wrapper glass-panel">
+                        <img src="assets/images/plan_2d.png" alt="High-Precision 2D CAD Floor Plan Design" class="visual-img">
+                        <div class="visual-glow"></div>
+                        <div class="visual-badge"><i class="fa-solid fa-drafting-compass"></i> High-precision 2D floor plans</div>
+                    </div>
+                </div>
+
+                <div class="service-info">
+                    <div class="service-num">06</div>
+                    <h3 class="service-title">2D Plans</h3>
+                    <p class="service-description">
+                        Precision engineering starts with a perfect layout. We model and deliver detailed 2D architectural drafts detailing wall dimensions, furniture configurations, partition layouts, door/window schedules, and electrical markers.
+                    </p>
+                    <ul class="walkthrough-features">
+                        <li><i class="fa-solid fa-pen-ruler gold"></i> Detailed spatial planning and dimensioning</li>
+                        <li><i class="fa-solid fa-table gold"></i> Comprehensive door, window, and fixture schedules</li>
+                        <li><i class="fa-solid fa-lightbulb gold"></i> Electrical, plumbing, and wall-thickness drafting</li>
+                    </ul>
+                </div>
+            </div>
+
         </div>
     </section>
 
@@ -488,6 +536,28 @@
                                     </div>
                                 </div>
                             </label>
+
+                            <label class="service-checkbox-card">
+                                <input type="checkbox" id="chkApprovals" data-factor="20">
+                                <div class="checkbox-inner">
+                                    <span class="checkmark"><i class="fa-solid fa-check"></i></span>
+                                    <div class="chk-details">
+                                        <strong>Plan Approvals</strong>
+                                        <span>Sanction drawing documentation</span>
+                                    </div>
+                                </div>
+                            </label>
+
+                            <label class="service-checkbox-card">
+                                <input type="checkbox" id="chkPlans2D" data-factor="10">
+                                <div class="checkbox-inner">
+                                    <span class="checkmark"><i class="fa-solid fa-check"></i></span>
+                                    <div class="chk-details">
+                                        <strong>2D Plans</strong>
+                                        <span>Precision floor drafts & specs</span>
+                                    </div>
+                                </div>
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -540,73 +610,6 @@
         </div>
     </section>
 
-    <!-- TESTIMONIALS & DESIGN SLIDER -->
-    <section id="testimonials" class="testimonials-section">
-        <div class="section-container">
-            <div class="section-header text-center">
-                <span class="section-tag">Client Reviews</span>
-                <h2 class="section-title">Trusted by Leading Infra Creators</h2>
-                <p class="section-desc">Hear from real estate developers, interior designers, and luxury homeowners who transformed their project visualization with 9 Square.</p>
-            </div>
-
-            <!-- Custom Horizontal Review Carousel -->
-            <div class="reviews-slider-container">
-                <div class="reviews-track" id="reviewsTrack">
-                    <!-- Card 1 -->
-                    <div class="review-card glass-panel">
-                        <div class="stars">
-                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                        </div>
-                        <p class="review-text">"9 Square Infra transformed our builder floor designs completely. The 3D elevations and the twilight lighting slider allowed us to pre-sell 80% of our luxury flats before construction ever started!"</p>
-                        <div class="reviewer-meta">
-                            <div class="reviewer-avatar">RA</div>
-                            <div class="reviewer-details">
-                                <strong>Rajesh Aggarwal</strong>
-                                <span>MD, Aggarwal Infrastructure</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card 2 -->
-                    <div class="review-card glass-panel">
-                        <div class="stars">
-                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                        </div>
-                        <p class="review-text">"The level of texture rendering on the wood panel layouts and modular kitchens was incredible. Clients instantly fell in love. Their 3D Room Configurator is ahead of its class."</p>
-                        <div class="reviewer-meta">
-                            <div class="reviewer-avatar">MS</div>
-                            <div class="reviewer-details">
-                                <strong>Meera Sen</strong>
-                                <span>Principal Architect, Studio Sen</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card 3 -->
-                    <div class="review-card glass-panel">
-                        <div class="stars">
-                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                        </div>
-                        <p class="review-text">"As a homeowner, visualizing space from structural blueprints was impossible. The interactive room selection layout made me understand exactly how our master bed and wardrobes would connect."</p>
-                        <div class="reviewer-meta">
-                            <div class="reviewer-avatar">VP</div>
-                            <div class="reviewer-details">
-                                <strong>Vikram Patwardhan</strong>
-                                <span>Luxury Homeowner, Pune</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="carousel-dots">
-                    <span class="dot active" data-index="0"></span>
-                    <span class="dot" data-index="1"></span>
-                    <span class="dot" data-index="2"></span>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- PREMIUM CONTACT & CONSULTATION FORM -->
     <section id="contact" class="contact-section">
         <div class="section-container">
@@ -621,21 +624,28 @@
                             <i class="fa-solid fa-phone gold"></i>
                             <div>
                                 <span>Call / WhatsApp</span>
-                                <strong>+91 999 999 9999</strong>
+                                <strong>+91 99486 99399<br>+91 93934 78247</strong>
                             </div>
                         </div>
                         <div class="info-item">
                             <i class="fa-solid fa-envelope gold"></i>
                             <div>
                                 <span>Direct Email</span>
-                                <strong>design@9squareinfra.com</strong>
+                                <strong>9squareinfra9@gmail.com</strong>
                             </div>
                         </div>
                         <div class="info-item">
                             <i class="fa-solid fa-location-dot gold"></i>
                             <div>
-                                <span>Main Studio</span>
-                                <strong>9th Floor, Infrastructure Tower, Tech Park Road, India</strong>
+                                <span>Head Office</span>
+                                <strong>JMR hospital Road, opp. Bandhan Bank, Ramachandra Rao Pet, Eluru, Andhra Pradesh 534002</strong>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fa-solid fa-location-dot gold"></i>
+                            <div>
+                                <span>Branch Office</span>
+                                <strong>Vijayawada</strong>
                             </div>
                         </div>
                     </div>
@@ -818,7 +828,7 @@
                     <h4>Company</h4>
                     <a href="#philosophy">Core Philosophy</a>
                     <a href="#estimator">Infra Estimator</a>
-                    <a href="#testimonials">Portfolio Cases</a>
+                    <a href="#services">Visual Portfolio</a>
                     <a href="#contact">Contact Support</a>
                     <a href="#">Privacy Policy</a>
                 </div>

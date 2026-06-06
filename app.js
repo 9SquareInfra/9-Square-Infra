@@ -248,6 +248,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const chkElevations = document.getElementById('chkElevations');
     const chkDesigns = document.getElementById('chkDesigns');
     const chkWalkthroughs = document.getElementById('chkWalkthroughs');
+    const chkApprovals = document.getElementById('chkApprovals');
+    const chkPlans2D = document.getElementById('chkPlans2D');
     
     const timelineVal = document.getElementById('timelineVal');
     const rendersVal = document.getElementById('rendersVal');
@@ -270,7 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let servicesSum = 0;
         let activeServicesCount = 0;
         
-        const checkboxes = [chkPlans, chkElevations, chkDesigns, chkWalkthroughs];
+        const checkboxes = [chkPlans, chkElevations, chkDesigns, chkWalkthroughs, chkApprovals, chkPlans2D];
         checkboxes.forEach(chk => {
             const parentLabel = chk.closest('.service-checkbox-card');
             if (chk.checked) {
@@ -318,6 +320,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (chkPlans.checked) perServiceRenders += 2;
             if (chkElevations.checked) perServiceRenders += 4;
             if (chkDesigns.checked) perServiceRenders += 3;
+            if (chkApprovals.checked) perServiceRenders += 2;
+            if (chkPlans2D.checked) perServiceRenders += 2;
             
             const areaMultiplier = 1 + (areaValue / 4000);
             minRenders = Math.max(1, Math.round(perServiceRenders * areaMultiplier * 0.85));
@@ -382,7 +386,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Checkbox and Slider events
     areaSlider.addEventListener('input', calculateEstimate);
-    [chkPlans, chkElevations, chkDesigns, chkWalkthroughs].forEach(chk => {
+    [chkPlans, chkElevations, chkDesigns, chkWalkthroughs, chkApprovals, chkPlans2D].forEach(chk => {
         chk.addEventListener('change', calculateEstimate);
     });
 
@@ -408,6 +412,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (chkElevations.checked) requirementsString += `  • 3D Elevations Facade\n`;
         if (chkDesigns.checked) requirementsString += `  • 3D Room Concept Designs\n`;
         if (chkWalkthroughs.checked) requirementsString += `  • Cinematic 3D VR Walkthroughs\n`;
+        if (chkApprovals.checked) requirementsString += `  • Plan Approvals Sanctions\n`;
+        if (chkPlans2D.checked) requirementsString += `  • 2D Plans drafting\n`;
         
         requirementsString += `Estimated Budget Indicator: ₹${feeVal.textContent}\n`;
         requirementsString += `Please share standard timelines & process details:`;
@@ -421,46 +427,7 @@ document.addEventListener('DOMContentLoaded', () => {
         projectRequirementsTextarea.focus();
     });
 
-    // --- REVIEWS CAROUSEL SLIDER ---
-    const reviewsTrack = document.getElementById('reviewsTrack');
-    const carouselDots = document.querySelectorAll('.dot');
-    let currentSlide = 0;
-    let carouselInterval;
 
-    function showSlide(index) {
-        currentSlide = index;
-        reviewsTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
-        
-        carouselDots.forEach((dot, idx) => {
-            if (idx === currentSlide) {
-                dot.classList.add('active');
-            } else {
-                dot.classList.remove('active');
-            }
-        });
-    }
-
-    carouselDots.forEach(dot => {
-        dot.addEventListener('click', () => {
-            const index = parseInt(dot.getAttribute('data-index'));
-            showSlide(index);
-            resetCarouselTimer();
-        });
-    });
-
-    function startCarouselTimer() {
-        carouselInterval = setInterval(() => {
-            let nextSlide = (currentSlide + 1) % carouselDots.length;
-            showSlide(nextSlide);
-        }, 6000);
-    }
-
-    function resetCarouselTimer() {
-        clearInterval(carouselInterval);
-        startCarouselTimer();
-    }
-
-    startCarouselTimer();
 
     // --- VR WALKTHROUGH MEDIA SIMULATION POPUP ---
     const videoTrigger = document.getElementById('videoTrigger');
