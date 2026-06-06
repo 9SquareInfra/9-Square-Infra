@@ -1818,11 +1818,13 @@ button, input, select, textarea {
     appearance: none;
     -webkit-appearance: none;
     cursor: pointer;
+    color-scheme: light;
 }
 
 .input-wrapper select option {
-    color: #000000;
-    background-color: #ffffff;
+    color: #000000 !important;
+    background-color: #ffffff !important;
+    color-scheme: light;
 }
 
 /* validation rules styles */
