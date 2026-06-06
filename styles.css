@@ -1736,6 +1736,16 @@ button, input, select, textarea {
     margin-top: 0.2rem;
 }
 
+.info-item div strong a {
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: var(--transition-quick);
+}
+
+.info-item div strong a:hover {
+    color: var(--color-gold);
+}
+
 .brand-quote {
     border-top: 1px solid var(--border-glass);
     padding-top: 2rem;
