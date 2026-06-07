@@ -137,6 +137,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 300);
     }
 
+    // Helper to force-reset active tab progress bar animation
+    function resetTabProgressAnimation(container) {
+        const activeTab = container.querySelector('.active');
+        if (activeTab) {
+            const bar = activeTab.querySelector('.tab-progress-bar');
+            if (bar) {
+                bar.style.animation = 'none';
+                bar.offsetHeight; /* trigger reflow */
+                bar.style.animation = '';
+            }
+        }
+    }
+
     let roomInterval;
     function startRoomTimer() {
         clearInterval(roomInterval);
@@ -158,7 +171,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const roomContainer = document.querySelector('.room-selector-widget').closest('.service-block');
     if (roomContainer) {
         roomContainer.addEventListener('mouseenter', () => clearInterval(roomInterval));
-        roomContainer.addEventListener('mouseleave', () => startRoomTimer());
+        roomContainer.addEventListener('mouseleave', () => {
+            startRoomTimer();
+            resetTabProgressAnimation(roomContainer);
+        });
     }
 
     startRoomTimer();
@@ -282,7 +298,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const styleContainer = document.querySelector('.style-configurator-widget').closest('.service-block');
     if (styleContainer) {
         styleContainer.addEventListener('mouseenter', () => clearInterval(styleInterval));
-        styleContainer.addEventListener('mouseleave', () => startStyleTimer());
+        styleContainer.addEventListener('mouseleave', () => {
+            startStyleTimer();
+            resetTabProgressAnimation(styleContainer);
+        });
     }
 
     startStyleTimer();
@@ -348,7 +367,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const planContainer = document.querySelector('.plan-toggle-widget').closest('.service-block');
     if (planContainer) {
         planContainer.addEventListener('mouseenter', () => clearInterval(planInterval));
-        planContainer.addEventListener('mouseleave', () => startPlanTimer());
+        planContainer.addEventListener('mouseleave', () => {
+            startPlanTimer();
+            resetTabProgressAnimation(planContainer);
+        });
     }
 
     startPlanTimer();
@@ -608,5 +630,134 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target === successModal) {
             successModal.classList.remove('active');
         }
+    });
+
+    // ==========================================================================
+    // ADDITIONAL ELEGANT INTERACTIVE LOGIC (PROPOSALS 1, 3, 4, 5)
+    // ==========================================================================
+
+    // --- 1. DYNAMICALLY INJECT TAB PROGRESS BARS ---
+    document.querySelectorAll('.room-tab, .style-opt, .plan-tab').forEach(tab => {
+        const bar = document.createElement('div');
+        bar.className = 'tab-progress-bar';
+        tab.appendChild(bar);
+    });
+
+    // --- 3. VR MODAL MODE SWITCHER & 360 PANORAMA VIEWER ---
+    const btnModeCinematic = document.getElementById('btnModeCinematic');
+    const btnModeVR = document.getElementById('btnModeVR');
+    const simCanvas = document.getElementById('simCanvas');
+    const panoramaCanvas = document.getElementById('panoramaCanvas');
+    let pnlmViewer = null;
+
+    btnModeCinematic.addEventListener('click', () => {
+        btnModeCinematic.classList.add('active');
+        btnModeVR.classList.remove('active');
+        
+        panoramaCanvas.style.display = 'none';
+        simCanvas.style.display = 'block';
+    });
+
+    btnModeVR.addEventListener('click', () => {
+        btnModeVR.classList.add('active');
+        btnModeCinematic.classList.remove('active');
+        
+        // Pause cinematic walkthrough if playing
+        pauseWalkthrough();
+        
+        simCanvas.style.display = 'none';
+        panoramaCanvas.style.display = 'block';
+        
+        // Initialize Pannellum if not already initialized
+        if (!pnlmViewer) {
+            pnlmViewer = pannellum.viewer('panoramaViewer', {
+                "type": "equirectangular",
+                "panorama": "assets/images/panorama_living.png",
+                "autoLoad": true,
+                "autoRotate": -2,
+                "compass": false,
+                "showControls": true
+            });
+        } else {
+            pnlmViewer.resize();
+        }
+    });
+
+    function resetModalMode() {
+        if (btnModeCinematic && btnModeVR && simCanvas && panoramaCanvas) {
+            btnModeCinematic.classList.add('active');
+            btnModeVR.classList.remove('active');
+            panoramaCanvas.style.display = 'none';
+            simCanvas.style.display = 'block';
+        }
+        if (pnlmViewer) {
+            pnlmViewer.destroy();
+            pnlmViewer = null;
+        }
+    }
+
+    // Hook reset into modal closure
+    modalClose.addEventListener('click', () => {
+        resetModalMode();
+    });
+    videoModal.addEventListener('click', (e) => {
+        if (e.target === videoModal) {
+            resetModalMode();
+        }
+    });
+
+    // --- 4. TWILIGHT SLIDER AUTO-SWEEPER SCROLL ANIMATION ---
+    function setSliderPosition(percent) {
+        if (nightImagePane && sliderDivider) {
+            nightImagePane.style.width = `${100 - percent}%`;
+            sliderDivider.style.left = `${percent}%`;
+        }
+    }
+
+    let hasSwept = false;
+    const sweepObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !hasSwept) {
+                hasSwept = true;
+                runSliderSweep();
+            }
+        });
+    }, { threshold: 0.3 });
+
+    if (sliderContainer) {
+        sweepObserver.observe(sliderContainer);
+    }
+
+    function runSliderSweep() {
+        let start = null;
+        const duration = 1500; // 1.5 seconds sweep
+        
+        function step(timestamp) {
+            if (!start) start = timestamp;
+            const progress = timestamp - start;
+            
+            if (progress < duration) {
+                const t = progress / duration;
+                // Sine wave sweep: center (50%) -> right (85%) -> center (50%) -> left (15%) -> center (50%)
+                const percent = 50 + 35 * Math.sin(2 * Math.PI * t);
+                setSliderPosition(percent);
+                requestAnimationFrame(step);
+            } else {
+                setSliderPosition(50); // Reset to center
+            }
+        }
+        requestAnimationFrame(step);
+    }
+
+    // --- 5. PHILOSOPHY GRID SPOTLIGHT MOUSE GLOW ---
+    const philosophyCards = document.querySelectorAll('.sq-card');
+    philosophyCards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            card.style.setProperty('--mouse-x', `${x}px`);
+            card.style.setProperty('--mouse-y', `${y}px`);
+        });
     });
 });

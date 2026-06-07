@@ -2659,4 +2659,127 @@ button, input, select, textarea {
     }
 }
 
+/* ==========================================================================
+   ADDITIONAL PREMIUM INTERACTIVE STYLES
+   ========================================================================== */
+
+/* 1. Visual Auto-Cycle Indicators */
+.room-tab, .style-opt, .plan-tab {
+    position: relative;
+    overflow: hidden;
+}
+
+.tab-progress-bar {
+    display: none;
+}
+
+.room-tab.active .tab-progress-bar,
+.style-opt.active .tab-progress-bar,
+.plan-tab.active .tab-progress-bar {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #ffb703, #fb8500);
+    width: 100%;
+    animation: tabProgress 3s linear forwards;
+}
+
+/* Pause animation on hover */
+.service-block:hover .room-tab.active .tab-progress-bar,
+.service-block:hover .style-opt.active .tab-progress-bar,
+.service-block:hover .plan-tab.active .tab-progress-bar {
+    animation-play-state: paused;
+}
+
+@keyframes tabProgress {
+    from { width: 0%; }
+    to { width: 100%; }
+}
+
+/* 2. Interactive 360° VR Walkthrough Modal Styles */
+.modal-mode-tabs {
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-glass);
+    padding-bottom: 1rem;
+}
+
+.modal-mode-tab {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-glass-light);
+    border-radius: 8px;
+    padding: 0.6rem 1.2rem;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-quick);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+}
+
+.modal-mode-tab:hover {
+    border-color: var(--color-teal);
+    color: var(--text-primary);
+}
+
+.modal-mode-tab.active {
+    background: rgba(0, 180, 216, 0.1);
+    border-color: var(--color-teal);
+    color: var(--text-primary);
+    box-shadow: 0 0 10px rgba(0, 180, 216, 0.15);
+}
+
+.panorama-canvas {
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border-glass-light);
+    background-color: #000;
+}
+
+.pnlm-container {
+    font-family: var(--font-body) !important;
+}
+
+/* 3. Spotlight cursor glow for Philosophy cards */
+.sq-card {
+    position: relative;
+}
+
+.sq-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(400px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(201, 160, 84, 0.08), transparent 50%);
+    border-radius: inherit;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.sq-card:hover::before {
+    opacity: 1;
+}
+
+/* Ensure child elements are above the spotlight glow layer so content is visible */
+.sq-card-inner {
+    position: relative;
+    z-index: 2;
+}
+
+.core-square {
+    z-index: 3 !important; /* Keep branding square on top */
+}
+
 
