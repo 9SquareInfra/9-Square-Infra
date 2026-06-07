@@ -239,195 +239,47 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- THE INFRA ESTIMATOR: CALCULATOR ENGINE ---
-    const propertyCards = document.querySelectorAll('.property-card');
-    const areaSlider = document.getElementById('areaSlider');
-    const areaDisplay = document.getElementById('areaDisplay');
-    
-    const chkPlans = document.getElementById('chkPlans');
-    const chkElevations = document.getElementById('chkElevations');
-    const chkDesigns = document.getElementById('chkDesigns');
-    const chkWalkthroughs = document.getElementById('chkWalkthroughs');
-    const chkApprovals = document.getElementById('chkApprovals');
-    const chkPlans2D = document.getElementById('chkPlans2D');
-    
-    const timelineVal = document.getElementById('timelineVal');
-    const rendersVal = document.getElementById('rendersVal');
-    const feeVal = document.getElementById('feeVal');
+    // --- PLAN APPROVALS - PLAN TOGGLE ---
+    const planTabs = document.querySelectorAll('.plan-tab');
+    const planImage = document.getElementById('planImage');
+    const planTitle = document.getElementById('planTitle');
+    const planDesc = document.getElementById('planDesc');
 
-    let activePropertyType = 'residential';
-    
-    // Property scale factors
-    const propertyFactors = {
-        residential: 1.0,
-        commercial: 1.35,
-        industrial: 1.55
+    const planData = {
+        draft: {
+            title: "Standard 2D Floor Plan Draft",
+            desc: "High-accuracy dimensional grid drafts showcasing room measurements, door/window openings, wall thicknesses, and furniture layouts.",
+            image: "assets/images/plan_2d.png"
+        },
+        approval: {
+            title: "Official Plan Approval Sanction",
+            desc: "Municipal-ready blueprint sheets complete with site plans, key maps, structural specifications, and zoning compliance layouts.",
+            image: "assets/images/plan_approvals.png"
+        }
     };
 
-    // Calculate details
-    function calculateEstimate() {
-        const areaValue = parseInt(areaSlider.value);
-        areaDisplay.textContent = areaValue.toLocaleString('en-IN');
-        
-        let servicesSum = 0;
-        let activeServicesCount = 0;
-        
-        const checkboxes = [chkPlans, chkElevations, chkDesigns, chkWalkthroughs, chkApprovals, chkPlans2D];
-        checkboxes.forEach(chk => {
-            const parentLabel = chk.closest('.service-checkbox-card');
-            if (chk.checked) {
-                servicesSum += parseFloat(chk.getAttribute('data-factor'));
-                activeServicesCount++;
-                parentLabel.classList.add('checked');
-            } else {
-                parentLabel.classList.remove('checked');
-            }
-        });
-
-        // Property Type Multiplier
-        const propFactor = propertyFactors[activePropertyType];
-        
-        // Fee Calculation Formula
-        // Fee = BaseAreaComplexity * SumOfServicesWeights * PropFactor
-        let finalFee = 0;
-        if (activeServicesCount > 0) {
-            // Exponential complexity discount on larger areas
-            const areaFactor = Math.pow(areaValue, 0.88); 
-            finalFee = Math.round(areaFactor * servicesSum * propFactor * 0.12);
-            // Round to nearest 500
-            finalFee = Math.round(finalFee / 500) * 500;
-        }
-
-        // Timeline Formula
-        let minWeeks = 0;
-        let maxWeeks = 0;
-        if (activeServicesCount > 0) {
-            const baseWeeks = (areaValue / 3000) + (activeServicesCount * 0.7);
-            minWeeks = Math.max(1, Math.round(baseWeeks * 0.8));
-            maxWeeks = Math.round(baseWeeks * 1.25);
+    planTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const planKey = tab.getAttribute('data-plan');
             
-            // Safety cap
-            if (minWeeks === maxWeeks) {
-                maxWeeks = minWeeks + 1;
-            }
-        }
-
-        // Renders Formula
-        let minRenders = 0;
-        let maxRenders = 0;
-        if (activeServicesCount > 0) {
-            let perServiceRenders = 0;
-            if (chkPlans.checked) perServiceRenders += 2;
-            if (chkElevations.checked) perServiceRenders += 4;
-            if (chkDesigns.checked) perServiceRenders += 3;
-            if (chkApprovals.checked) perServiceRenders += 2;
-            if (chkPlans2D.checked) perServiceRenders += 2;
+            // Toggle Active Tab class
+            planTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
             
-            const areaMultiplier = 1 + (areaValue / 4000);
-            minRenders = Math.max(1, Math.round(perServiceRenders * areaMultiplier * 0.85));
-            maxRenders = Math.round(perServiceRenders * areaMultiplier * 1.25);
-
-            if (chkWalkthroughs.checked) {
-                // Adds videos note
-                rendersVal.innerHTML = `${minRenders}-${maxRenders} Renders + <span class="gold">1 Walkthrough</span>`;
-            } else {
-                rendersVal.textContent = `${minRenders} - ${maxRenders}`;
-            }
-        } else {
-            rendersVal.textContent = "0";
-        }
-
-        // Update displays
-        if (activeServicesCount === 0) {
-            timelineVal.textContent = "0";
-            rendersVal.textContent = "0";
-            feeVal.textContent = "0";
-        } else {
-            timelineVal.textContent = `${minWeeks} - ${maxWeeks}`;
-            animateValueDisplay(feeVal, finalFee);
-        }
-    }
-
-    // Dynamic number counting animation
-    function animateValueDisplay(target, finalValue) {
-        const startValue = parseInt(target.textContent.replace(/,/g, '')) || 0;
-        if (startValue === finalValue) return;
-        
-        const duration = 800; // ms
-        const startTime = performance.now();
-        
-        function updateCounter(currentTime) {
-            const elapsed = currentTime - startTime;
-            const progress = Math.min(elapsed / duration, 1);
+            // Fluid Transition on details & image swap
+            planImage.style.opacity = 0;
+            planImage.style.transform = "scale(0.96) rotate(1deg)";
             
-            // Ease-out cubic curve
-            const easeProgress = 1 - Math.pow(1 - progress, 3);
-            const currentValue = Math.round(startValue + (finalValue - startValue) * easeProgress);
-            
-            target.textContent = currentValue.toLocaleString('en-IN');
-            
-            if (progress < 1) {
-                requestAnimationFrame(updateCounter);
-            }
-        }
-        
-        requestAnimationFrame(updateCounter);
-    }
-
-    // Property Type Event bindings
-    propertyCards.forEach(card => {
-        card.addEventListener('click', () => {
-            propertyCards.forEach(c => c.classList.remove('active'));
-            card.classList.add('active');
-            activePropertyType = card.getAttribute('data-prop');
-            calculateEstimate();
+            setTimeout(() => {
+                planImage.src = planData[planKey].image;
+                planTitle.textContent = planData[planKey].title;
+                planDesc.textContent = planData[planKey].desc;
+                
+                planImage.style.opacity = 1;
+                planImage.style.transform = "scale(1) rotate(0)";
+            }, 300);
         });
     });
-
-    // Checkbox and Slider events
-    areaSlider.addEventListener('input', calculateEstimate);
-    [chkPlans, chkElevations, chkDesigns, chkWalkthroughs, chkApprovals, chkPlans2D].forEach(chk => {
-        chk.addEventListener('change', calculateEstimate);
-    });
-
-    // Run initial calculations
-    calculateEstimate();
-
-    // --- APPLY ESTIMATOR TO CONTACT FORM INTERACTION ---
-    const applyEstimatorBtn = document.getElementById('applyEstimatorBtn');
-    const contactSection = document.getElementById('contact');
-    const projectTypeSelect = document.getElementById('projectType');
-    const projectRequirementsTextarea = document.getElementById('projectRequirements');
-
-    applyEstimatorBtn.addEventListener('click', () => {
-        // Sync property type dropdown
-        projectTypeSelect.value = activePropertyType;
-        
-        // Sync description textbox
-        let requirementsString = `Estimator Summary:\n`;
-        requirementsString += `- Area: ${parseInt(areaSlider.value).toLocaleString('en-IN')} Sq. Ft.\n`;
-        requirementsString += `- Services Requested:\n`;
-        
-        if (chkPlans.checked) requirementsString += `  • Interior Designs\n`;
-        if (chkElevations.checked) requirementsString += `  • 3D Elevations Facade\n`;
-        if (chkDesigns.checked) requirementsString += `  • 3D Room Concept Designs\n`;
-        if (chkWalkthroughs.checked) requirementsString += `  • Cinematic 3D VR Walkthroughs\n`;
-        if (chkApprovals.checked) requirementsString += `  • Plan Approvals Sanctions\n`;
-        if (chkPlans2D.checked) requirementsString += `  • 2D Plans drafting\n`;
-        
-        requirementsString += `Estimated Budget Indicator: ₹${feeVal.textContent}\n`;
-        requirementsString += `Please share standard timelines & process details:`;
-        
-        projectRequirementsTextarea.value = requirementsString;
-        
-        // Smooth scroll to form container
-        contactSection.scrollIntoView({ behavior: 'smooth' });
-        
-        // Trigger minor focus glows
-        projectRequirementsTextarea.focus();
-    });
-
-
 
     // --- VR WALKTHROUGH MEDIA SIMULATION POPUP ---
     const videoTrigger = document.getElementById('videoTrigger');
@@ -557,18 +409,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const clientName = document.getElementById('clientName');
     const clientPhone = document.getElementById('clientPhone');
     const clientEmail = document.getElementById('clientEmail');
+    const projectTypeSelect = document.getElementById('projectType');
+    const projectServiceSelect = document.getElementById('projectService');
+    const projectRequirementsTextarea = document.getElementById('projectRequirements');
     
     const nameError = document.getElementById('nameError');
     const phoneError = document.getElementById('phoneError');
     const emailError = document.getElementById('emailError');
+    const serviceError = document.getElementById('serviceError');
     
     const successModal = document.getElementById('successModal');
     const successMessage = document.getElementById('successMessage');
     const successCloseBtn = document.getElementById('successCloseBtn');
     
     const summaryProp = document.getElementById('summaryProp');
-    const summaryArea = document.getElementById('summaryArea');
-    const summaryFee = document.getElementById('summaryFee');
+    const summaryService = document.getElementById('summaryService');
 
     // Validation patterns
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -587,7 +442,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return isValid;
     }
 
-    // Live validation triggers on blue-blur input fields
+    // Live validation triggers
     clientName.addEventListener('blur', () => {
         validateField(clientName, nameError, val => val.length > 0);
     });
@@ -600,6 +455,10 @@ document.addEventListener('DOMContentLoaded', () => {
         validateField(clientEmail, emailError, val => emailRegex.test(val));
     });
 
+    projectServiceSelect.addEventListener('change', () => {
+        validateField(projectServiceSelect, serviceError, val => val !== "");
+    });
+
     consultForm.addEventListener('submit', (e) => {
         e.preventDefault();
         
@@ -607,12 +466,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const isNameValid = validateField(clientName, nameError, val => val.length > 0);
         const isPhoneValid = validateField(clientPhone, phoneError, val => phoneRegex.test(val));
         const isEmailValid = validateField(clientEmail, emailError, val => emailRegex.test(val));
+        const isServiceValid = validateField(projectServiceSelect, serviceError, val => val !== "");
 
-        if (isNameValid && isPhoneValid && isEmailValid) {
-            // Sync success screens details with calculator active states
-            summaryProp.textContent = activePropertyType.charAt(0).toUpperCase() + activePropertyType.slice(1);
-            summaryArea.textContent = `${parseInt(areaSlider.value).toLocaleString('en-IN')} Sq. Ft.`;
-            summaryFee.textContent = `₹${feeVal.textContent}`;
+        if (isNameValid && isPhoneValid && isEmailValid && isServiceValid) {
+            // Populate success screen services summary
+            summaryProp.textContent = projectTypeSelect.options[projectTypeSelect.selectedIndex].text;
+            summaryService.textContent = projectServiceSelect.options[projectServiceSelect.selectedIndex].text;
             
             // Format success custom message
             const firstName = clientName.value.trim().split(' ')[0];
@@ -627,10 +486,11 @@ document.addEventListener('DOMContentLoaded', () => {
             messageText += `*Client Name:* ${clientName.value.trim()}\n`;
             messageText += `*Phone:* ${clientPhone.value.trim()}\n`;
             messageText += `*Email:* ${clientEmail.value.trim()}\n`;
-            messageText += `*Property Category:* ${projectTypeSelect.options[projectTypeSelect.selectedIndex].text}\n\n`;
+            messageText += `*Property Category:* ${projectTypeSelect.options[projectTypeSelect.selectedIndex].text}\n`;
+            messageText += `*Service Requested:* ${projectServiceSelect.options[projectServiceSelect.selectedIndex].text}\n\n`;
             
             if (projectRequirementsTextarea.value.trim()) {
-                messageText += `*Requirements / Estimator Selections:*\n${projectRequirementsTextarea.value.trim()}\n`;
+                messageText += `*Requirements / Notes:*\n${projectRequirementsTextarea.value.trim()}\n`;
             }
             
             const whatsAppUrl = `https://wa.me/${primaryNumber}?text=${encodeURIComponent(messageText)}`;
@@ -645,8 +505,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     phone: clientPhone.value.trim(),
                     email: clientEmail.value.trim(),
                     category: projectTypeSelect.options[projectTypeSelect.selectedIndex].text,
-                    requirements: projectRequirementsTextarea.value.trim(),
-                    budget: `₹${feeVal.textContent}`
+                    requirements: `Service: ${projectServiceSelect.options[projectServiceSelect.selectedIndex].text}\nNotes: ${projectRequirementsTextarea.value.trim()}`,
+                    budget: 'N/A'
                 };
                 
                 fetch(googleSheetUrl, {
@@ -664,7 +524,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // Clear all fields
             consultForm.reset();
             document.querySelectorAll('.form-group').forEach(grp => grp.classList.remove('invalid'));
-            calculateEstimate(); // reset estimator summary
         }
     });
 

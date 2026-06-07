@@ -1197,356 +1197,73 @@ button, input, select, textarea {
     order: 1;
 }
 
-/* --- THE INFRA ESTIMATOR: CALCULATOR SECTION --- */
-.estimator-section {
-    background-color: #0c0e12;
-    position: relative;
-}
-
-.estimator-grid {
-    display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
-    gap: 3.5rem;
-    padding: 3.5rem;
-}
-
-.input-group {
-    margin-bottom: 2.2rem;
-}
-
-.input-group:last-child {
-    margin-bottom: 0;
-}
-
-.input-label {
-    font-family: var(--font-heading);
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    margin-bottom: 1.2rem;
-}
-
-.step-num {
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background-color: var(--color-gold);
-    color: #0c0e12;
-    font-size: 0.85rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Property Selection Cards */
-.property-cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.2rem;
-}
-
-.property-card {
+/* --- PLAN APPROVALS TOGGLE WIDGET --- */
+.plan-toggle-widget {
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid var(--border-glass);
     border-radius: 12px;
-    padding: 1.2rem;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.8rem;
-    color: var(--text-secondary);
-    transition: var(--transition-smooth);
+    padding: 1.5rem;
+    margin-top: 1.8rem;
+    width: 100%;
 }
 
-.property-card i {
-    font-size: 1.5rem;
+.plan-tabs {
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 1.2rem;
+    flex-wrap: wrap;
+}
+
+.plan-tab {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-glass);
+    color: var(--text-secondary);
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     transition: var(--transition-quick);
 }
 
-.property-card span {
-    font-family: var(--font-heading);
+.plan-tab i {
     font-size: 0.9rem;
-    font-weight: 500;
+    transition: var(--transition-quick);
 }
 
-.property-card:hover {
-    background: rgba(255, 255, 255, 0.05);
+.plan-tab:hover {
+    background: rgba(255, 255, 255, 0.06);
     color: var(--text-primary);
     border-color: var(--border-glass-light);
 }
 
-.property-card.active {
-    background: rgba(201, 160, 84, 0.08);
+.plan-tab.active {
+    background: rgba(201, 160, 84, 0.1);
     color: var(--color-gold);
     border-color: var(--color-gold);
-    box-shadow: 0 0 15px rgba(201, 160, 84, 0.1);
+    box-shadow: 0 0 10px rgba(201, 160, 84, 0.1);
 }
 
-.property-card.active i {
-    transform: scale(1.1);
+.plan-details-box {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 1rem;
 }
 
-/* Custom Range Slider */
-.slider-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.8rem;
-}
-
-.slider-value-display {
-    font-family: var(--font-heading);
-    font-size: 1.25rem;
+.plan-details-box h4 {
+    font-size: 1.05rem;
     font-weight: 700;
-    color: var(--color-gold);
-}
-
-.custom-slider {
-    width: 100%;
-    height: 6px;
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 10px;
-    outline: none;
-    -webkit-appearance: none;
-}
-
-/* Custom Slider Thumb styling */
-.custom-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background-color: var(--color-gold);
-    border: 2px solid #0a0c10;
-    cursor: pointer;
-    box-shadow: 0 0 10px var(--color-gold);
-    transition: var(--transition-quick);
-}
-
-.custom-slider::-webkit-slider-thumb:hover {
-    transform: scale(1.2);
-    background-color: var(--color-gold-hover);
-}
-
-.slider-labels {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    margin-top: 0.5rem;
-}
-
-/* Service Options Checkboxes */
-.service-checkboxes {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.2rem;
-}
-
-.service-checkbox-card {
-    cursor: pointer;
-    position: relative;
-}
-
-.service-checkbox-card input[type="checkbox"] {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
-}
-
-.checkbox-inner {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid var(--border-glass);
-    border-radius: 12px;
-    padding: 1rem 1.2rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    color: var(--text-secondary);
-    transition: var(--transition-smooth);
-}
-
-.checkmark {
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--text-muted);
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.75rem;
-    color: transparent;
-    transition: var(--transition-quick);
-}
-
-.chk-details {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.3;
-}
-
-.chk-details strong {
-    font-family: var(--font-heading);
-    font-size: 0.9rem;
-    font-weight: 600;
     color: var(--text-primary);
-}
-
-.chk-details span {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-}
-
-/* Active states for Checkboxes */
-.service-checkbox-card:hover .checkbox-inner {
-    background: rgba(255, 255, 255, 0.04);
-}
-
-.service-checkbox-card.checked .checkbox-inner {
-    background: rgba(20, 184, 166, 0.05);
-    border-color: var(--color-teal);
-}
-
-.service-checkbox-card.checked .checkmark {
-    border-color: var(--color-teal);
-    background-color: var(--color-teal);
-    color: #0c0e12;
-}
-
-/* Outputs Panel style */
-.estimator-outputs {
-    background: rgba(255, 255, 255, 0.01);
-    border-left: 1px solid var(--border-glass);
-    padding-left: 3.5rem;
-    display: flex;
-    flex-direction: column;
-}
-
-.output-header {
-    border-bottom: 1px solid var(--border-glass);
-    padding-bottom: 1.5rem;
-    margin-bottom: 2rem;
-}
-
-.output-header h3 {
-    font-size: 1.4rem;
-    color: var(--text-primary);
-}
-
-.output-header p {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-}
-
-.output-metrics {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    margin-bottom: 2.5rem;
-}
-
-.metric-card {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid var(--border-glass);
-    border-radius: 12px;
-    padding: 1.2rem 1.5rem;
-    display: flex;
-    flex-direction: column;
-}
-
-.metric-label {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text-muted);
     margin-bottom: 0.4rem;
 }
 
-.metric-value-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-}
-
-.metric-icon {
-    font-size: 1.2rem;
-    color: var(--color-teal);
-}
-
-.metric-val {
-    font-family: var(--font-heading);
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    line-height: 1;
-}
-
-.metric-unit {
+.plan-details-box p {
     font-size: 0.85rem;
-    color: var(--text-secondary);
-    margin-top: 0.4rem;
-}
-
-/* Luxury Investment Fee Display Box */
-.fee-display-box {
-    background: linear-gradient(135deg, rgba(201, 160, 84, 0.05) 0%, rgba(201, 160, 84, 0.01) 100%);
-    border: 1px solid rgba(201, 160, 84, 0.2);
-    border-radius: 16px;
-    padding: 1.8rem;
-    margin-bottom: 2rem;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.fee-label {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-gold);
-    display: block;
-    margin-bottom: 0.5rem;
-}
-
-.fee-amount {
-    display: flex;
-    align-items: baseline;
-    gap: 0.2rem;
-    margin-bottom: 0.8rem;
-}
-
-.fee-amount .currency {
-    font-family: var(--font-heading);
-    font-size: 1.8rem;
-    font-weight: 400;
-    color: var(--color-gold);
-}
-
-.fee-amount .amount {
-    font-family: var(--font-heading);
-    font-size: 3.2rem;
-    font-weight: 800;
-    color: var(--text-primary);
-    line-height: 1;
-}
-
-.fee-amount .fee-suffix {
-    font-size: 1.2rem;
-    color: var(--color-gold);
-}
-
-.fee-disclaimer {
-    font-size: 0.72rem;
     color: var(--text-muted);
-    line-height: 1.4;
+    line-height: 1.5;
 }
 
 /* --- TESTIMONIALS SLIDER SECTION --- */
@@ -2791,20 +2508,7 @@ button, input, select, textarea {
         order: 2;
     }
     
-    /* Estimator layout stack */
-    .estimator-grid {
-        grid-template-columns: 1fr;
-        gap: 3rem;
-        padding: 2.5rem;
-    }
-    
-    .estimator-outputs {
-        border-left: none;
-        border-top: 1px solid var(--border-glass);
-        padding-left: 0;
-        padding-top: 3rem;
-    }
-    
+
     /* Contact Box layout stack */
     .contact-box {
         grid-template-columns: 1fr;
@@ -2949,11 +2653,10 @@ button, input, select, textarea {
         padding: 2rem 1.2rem;
     }
     
-    .estimator-grid {
-        padding: 1.5rem 1rem;
-    }
-    
+
     .service-card {
         padding: 2rem 1.2rem;
     }
 }
+
+

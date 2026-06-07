@@ -35,7 +35,7 @@
                 <a href="#home" class="nav-link active">Home</a>
                 <a href="#philosophy" class="nav-link">Philosophy</a>
                 <a href="#services" class="nav-link">Services</a>
-                <a href="#estimator" class="nav-link">Estimator</a>
+                <a href="#contact" class="nav-link">Get Quote</a>
                 <a href="#contact" class="btn-primary nav-btn">Get Consultation</a>
             </nav>
 
@@ -67,8 +67,8 @@
                 <a href="#services" class="btn-primary btn-large">
                     <i class="fa-solid fa-compass"></i> Explore Services
                 </a>
-                <a href="#estimator" class="btn-secondary btn-large">
-                    <i class="fa-solid fa-calculator"></i> Estimate Project
+                <a href="#contact" class="btn-secondary btn-large">
+                    <i class="fa-solid fa-calendar-check"></i> Book Consultation
                 </a>
             </div>
             
@@ -470,174 +470,42 @@
                 </div>
             </div>
 
-        </div>
-    </section>
-
-    <!-- THE INFRA ESTIMATOR: INTERACTIVE PROJECT CALCULATOR -->
-    <section id="estimator" class="estimator-section">
-        <div class="section-container">
-            <div class="section-header text-center">
-                <span class="section-tag">Instant Calculation</span>
-                <h2 class="section-title">The <span class="gold-text">Infra Estimator</span></h2>
-                <p class="section-desc">Estimate your visualization package scope, expected assets, project schedules, and approximate fees in real time.</p>
-            </div>
-
-            <div class="estimator-grid glass-card">
-                <!-- Inputs column -->
-                <div class="estimator-inputs">
-                    <!-- Step 1: Property Type -->
-                    <div class="input-group">
-                        <label class="input-label"><span class="step-num">1</span> Select Property Architecture:</label>
-                        <div class="property-cards">
-                            <div class="property-card active" data-prop="residential">
-                                <i class="fa-solid fa-house"></i>
-                                <span>Residential</span>
-                            </div>
-                            <div class="property-card" data-prop="commercial">
-                                <i class="fa-solid fa-building"></i>
-                                <span>Commercial</span>
-                            </div>
-                            <div class="property-card" data-prop="industrial">
-                                <i class="fa-solid fa-warehouse"></i>
-                                <span>Industrial</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Step 2: Square Footage -->
-                    <div class="input-group">
-                        <div class="slider-header">
-                            <label class="input-label"><span class="step-num">2</span> Total Floor Area:</label>
-                            <span class="slider-value-display"><span id="areaDisplay">2000</span> Sq. Ft.</span>
-                        </div>
-                        <input type="range" id="areaSlider" class="custom-slider" min="500" max="10000" step="100" value="2000">
-                        <div class="slider-labels">
-                            <span>500 sq ft</span>
-                            <span>5,000 sq ft</span>
-                            <span>10,000+ sq ft</span>
-                        </div>
-                    </div>
-
-                    <!-- Step 3: Desired Services -->
-                    <div class="input-group">
-                        <label class="input-label"><span class="step-num">3</span> Toggle Desired Visualization Services:</label>
-                        <div class="service-checkboxes">
-                            <label class="service-checkbox-card checked">
-                                <input type="checkbox" id="chkPlans" checked data-factor="15">
-                                <div class="checkbox-inner">
-                                    <span class="checkmark"><i class="fa-solid fa-check"></i></span>
-                                    <div class="chk-details">
-                                        <strong>Interior Designs</strong>
-                                        <span>Isometric interior blueprints</span>
-                                    </div>
-                                </div>
-                            </label>
-
-                            <label class="service-checkbox-card checked">
-                                <input type="checkbox" id="chkElevations" checked data-factor="25">
-                                <div class="checkbox-inner">
-                                    <span class="checkmark"><i class="fa-solid fa-check"></i></span>
-                                    <div class="chk-details">
-                                        <strong>3D Elevations</strong>
-                                        <span>Exterior rendering and light angles</span>
-                                    </div>
-                                </div>
-                            </label>
-
-                            <label class="service-checkbox-card checked">
-                                <input type="checkbox" id="chkDesigns" checked data-factor="35">
-                                <div class="checkbox-inner">
-                                    <span class="checkmark"><i class="fa-solid fa-check"></i></span>
-                                    <div class="chk-details">
-                                        <strong>3D Room Designs</strong>
-                                        <span>High-fidelity textures & lighting</span>
-                                    </div>
-                                </div>
-                            </label>
-
-                            <label class="service-checkbox-card">
-                                <input type="checkbox" id="chkWalkthroughs" data-factor="60">
-                                <div class="checkbox-inner">
-                                    <span class="checkmark"><i class="fa-solid fa-check"></i></span>
-                                    <div class="chk-details">
-                                        <strong>3D Walkthroughs</strong>
-                                        <span>Cinematic UHD VR video tour</span>
-                                    </div>
-                                </div>
-                            </label>
-
-                            <label class="service-checkbox-card">
-                                <input type="checkbox" id="chkApprovals" data-factor="20">
-                                <div class="checkbox-inner">
-                                    <span class="checkmark"><i class="fa-solid fa-check"></i></span>
-                                    <div class="chk-details">
-                                        <strong>Plan Approvals</strong>
-                                        <span>Sanction drawing documentation</span>
-                                    </div>
-                                </div>
-                            </label>
-
-                            <label class="service-checkbox-card">
-                                <input type="checkbox" id="chkPlans2D" data-factor="10">
-                                <div class="checkbox-inner">
-                                    <span class="checkmark"><i class="fa-solid fa-check"></i></span>
-                                    <div class="chk-details">
-                                        <strong>2D Plans</strong>
-                                        <span>Precision floor drafts & specs</span>
-                                    </div>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Outputs column -->
-                <div class="estimator-outputs">
-                    <div class="output-header">
-                        <h3>Interactive Project Summary</h3>
-                        <p>Based on your selections</p>
-                    </div>
+            <!-- SERVICE 5: PLAN APPROVALS -->
+            <div class="service-block design-left">
+                <div class="service-info">
+                    <div class="service-num">05</div>
+                    <h3 class="service-title">Plan Approvals</h3>
+                    <p class="service-description">
+                        We draft precision municipal-ready drawings and handle official building plan approvals. Use the toggle below to swap between our standard 2D floor plans and the finalized regulatory municipal approval layouts.
+                    </p>
                     
-                    <div class="output-metrics">
-                        <!-- Metric 1: Timeline -->
-                        <div class="metric-card">
-                            <span class="metric-label">Estimated Timeline</span>
-                            <div class="metric-value-wrapper">
-                                <i class="fa-solid fa-calendar-days metric-icon"></i>
-                                <span class="metric-val" id="timelineVal">3 - 4</span>
-                                <span class="metric-unit">Weeks</span>
-                            </div>
+                    <!-- Interactive Plan Toggle Widget -->
+                    <div class="plan-toggle-widget">
+                        <span class="widget-label"><i class="fa-solid fa-file-signature gold"></i> Toggle Plan Type:</span>
+                        <div class="plan-tabs">
+                            <button class="plan-tab active" data-plan="draft"><i class="fa-solid fa-map"></i> 2D Floor Plan</button>
+                            <button class="plan-tab" data-plan="approval"><i class="fa-solid fa-stamp"></i> Approval Layout</button>
                         </div>
-
-                        <!-- Metric 2: Renders -->
-                        <div class="metric-card">
-                            <span class="metric-label">Deliverable Assets</span>
-                            <div class="metric-value-wrapper">
-                                <i class="fa-solid fa-images metric-icon"></i>
-                                <span class="metric-val" id="rendersVal">12 - 15</span>
-                                <span class="metric-unit">High-Fi Renders</span>
-                            </div>
+                        <div class="plan-details-box">
+                             <h4 id="planTitle">Standard 2D Floor Plan Draft</h4>
+                             <p id="planDesc">High-accuracy dimensional grid drafts showcasing room measurements, door/window openings, wall thicknesses, and furniture layouts.</p>
                         </div>
                     </div>
-
-                    <!-- Fee box -->
-                    <div class="fee-display-box">
-                        <span class="fee-label">Approximate Design Investment</span>
-                        <div class="fee-amount">
-                            <span class="currency">₹</span>
-                            <span class="amount" id="feeVal">45,000</span>
-                            <span class="fee-suffix">*</span>
-                        </div>
-                        <p class="fee-disclaimer">*Disclaimer: Fee estimates are indicative of basic scope and complexity. Excludes GST and heavy modeling structural fees.</p>
+                </div>
+                
+                <div class="service-visual">
+                    <div class="visual-wrapper glass-panel">
+                        <img id="planImage" src="assets/images/plan_2d.png" alt="2D Floor Plan Draft" class="visual-img">
+                        <div class="visual-glow"></div>
+                        <div class="visual-badge"><i class="fa-solid fa-stamp"></i> Approval documentation active</div>
                     </div>
-
-                    <button class="btn-primary btn-large btn-full" id="applyEstimatorBtn">
-                        <i class="fa-solid fa-paper-plane"></i> Apply Selections & Contact Us
-                    </button>
                 </div>
             </div>
+
         </div>
     </section>
+
+
 
     <!-- PREMIUM CONTACT & CONSULTATION FORM -->
     <section id="contact" class="contact-section">
@@ -719,20 +587,38 @@
                             <span class="error-msg" id="emailError">Please enter a valid email address</span>
                         </div>
 
-                        <div class="form-group">
-                            <label for="projectType">Selected Property Category</label>
-                            <div class="input-wrapper">
-                                <i class="fa-solid fa-building input-icon"></i>
-                                <select id="projectType">
-                                    <option value="residential">Residential Villa / Apartment</option>
-                                    <option value="commercial">Commercial Office / Mall</option>
-                                    <option value="industrial">Industrial Complex / Warehouse</option>
-                                </select>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="projectType">Property Category</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-building input-icon"></i>
+                                    <select id="projectType">
+                                        <option value="residential">Residential Villa / Apartment</option>
+                                        <option value="commercial">Commercial Office / Mall</option>
+                                        <option value="industrial">Industrial Complex / Warehouse</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="projectService">Service Required *</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-screwdriver-wrench input-icon"></i>
+                                    <select id="projectService" required>
+                                        <option value="" disabled selected>Select a Service...</option>
+                                        <option value="construction">Construction Services</option>
+                                        <option value="design-planning">Design & Planning (2D plans, elevations)</option>
+                                        <option value="interior-design">Interior Design (Kitchens, wardrobes)</option>
+                                        <option value="engineering-consultancy">Engineering Consultancy</option>
+                                        <option value="plan-approvals">Plan Approvals</option>
+                                    </select>
+                                </div>
+                                <span class="error-msg" id="serviceError">Please select a service</span>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="projectRequirements">Project Requirements / Estimator Selections</label>
+                            <label for="projectRequirements">Project Requirements & Notes</label>
                             <div class="input-wrapper">
                                 <i class="fa-solid fa-pen-nib input-icon textarea-icon"></i>
                                 <textarea id="projectRequirements" rows="4" placeholder="Briefly describe your structural design requirements, total levels, expected rooms, or deadline expectations..."></textarea>
@@ -814,12 +700,8 @@
                     <strong id="summaryProp">Residential</strong>
                 </div>
                 <div class="sel-summary-row">
-                    <span>Floor Area:</span>
-                    <strong id="summaryArea">2,000 sq. ft.</strong>
-                </div>
-                <div class="sel-summary-row">
-                    <span>Fee Budget Indicator:</span>
-                    <strong id="summaryFee">₹45,000</strong>
+                    <span>Selected Service:</span>
+                    <strong id="summaryService">Interior Designs</strong>
                 </div>
             </div>
 
@@ -856,7 +738,7 @@
                 <div class="footer-col">
                     <h4>Company</h4>
                     <a href="#philosophy">Core Philosophy</a>
-                    <a href="#estimator">Infra Estimator</a>
+                    <a href="#contact">Book Consultation</a>
                     <a href="#services">Visual Portfolio</a>
                     <a href="#contact">Contact Support</a>
                     <a href="#">Privacy Policy</a>
