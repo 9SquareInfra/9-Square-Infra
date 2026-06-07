@@ -116,28 +116,52 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    function switchRoom(tab) {
+        const roomKey = tab.getAttribute('data-room');
+        
+        // Toggle Active Tab class
+        roomTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        
+        // Fluid Transition on details & image swap
+        roomImage.style.opacity = 0;
+        roomImage.style.transform = "scale(0.96) rotate(-2deg)";
+        
+        setTimeout(() => {
+            roomImage.src = roomData[roomKey].image;
+            roomTitle.textContent = roomData[roomKey].title;
+            roomDesc.textContent = roomData[roomKey].desc;
+            
+            roomImage.style.opacity = 1;
+            roomImage.style.transform = "scale(1) rotate(0)";
+        }, 300);
+    }
+
+    let roomInterval;
+    function startRoomTimer() {
+        clearInterval(roomInterval);
+        roomInterval = setInterval(() => {
+            let activeIdx = Array.from(roomTabs).findIndex(t => t.classList.contains('active'));
+            let nextIdx = (activeIdx + 1) % roomTabs.length;
+            switchRoom(roomTabs[nextIdx]);
+        }, 3000);
+    }
+
     roomTabs.forEach(tab => {
         tab.addEventListener('click', () => {
-            const roomKey = tab.getAttribute('data-room');
-            
-            // Toggle Active Tab class
-            roomTabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            
-            // Fluid Transition on details & image swap
-            roomImage.style.opacity = 0;
-            roomImage.style.transform = "scale(0.96) rotate(-2deg)";
-            
-            setTimeout(() => {
-                roomImage.src = roomData[roomKey].image;
-                roomTitle.textContent = roomData[roomKey].title;
-                roomDesc.textContent = roomData[roomKey].desc;
-                
-                roomImage.style.opacity = 1;
-                roomImage.style.transform = "scale(1) rotate(0)";
-            }, 300);
+            switchRoom(tab);
+            startRoomTimer(); // Reset timer on manual selection
         });
     });
+
+    // Pause auto-cycle on hover
+    const roomContainer = document.querySelector('.room-selector-widget').closest('.service-block');
+    if (roomContainer) {
+        roomContainer.addEventListener('mouseenter', () => clearInterval(roomInterval));
+        roomContainer.addEventListener('mouseleave', () => startRoomTimer());
+    }
+
+    startRoomTimer();
 
     // --- 3D ELEVATIONS - DAY-TO-NIGHT TWILIGHT SLIDER ---
     const sliderContainer = document.getElementById('sliderContainer');
@@ -217,27 +241,51 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    function switchStyle(option) {
+        const styleKey = option.getAttribute('data-style');
+        
+        // Toggle active option class
+        styleOptions.forEach(opt => opt.classList.remove('active'));
+        option.classList.add('active');
+        
+        // Transition swap visual images
+        styleImage.style.opacity = 0;
+        styleImage.style.transform = "scale(1.05) translateY(-5px)";
+        
+        setTimeout(() => {
+            styleImage.src = styleData[styleKey].image;
+            styleDesc.innerHTML = styleData[styleKey].desc;
+            
+            styleImage.style.opacity = 1;
+            styleImage.style.transform = "scale(1) translateY(0)";
+        }, 300);
+    }
+
+    let styleInterval;
+    function startStyleTimer() {
+        clearInterval(styleInterval);
+        styleInterval = setInterval(() => {
+            let activeIdx = Array.from(styleOptions).findIndex(opt => opt.classList.contains('active'));
+            let nextIdx = (activeIdx + 1) % styleOptions.length;
+            switchStyle(styleOptions[nextIdx]);
+        }, 3000);
+    }
+
     styleOptions.forEach(option => {
         option.addEventListener('click', () => {
-            const styleKey = option.getAttribute('data-style');
-            
-            // Toggle active option class
-            styleOptions.forEach(opt => opt.classList.remove('active'));
-            option.classList.add('active');
-            
-            // Transition swap visual images
-            styleImage.style.opacity = 0;
-            styleImage.style.transform = "scale(1.05) translateY(-5px)";
-            
-            setTimeout(() => {
-                styleImage.src = styleData[styleKey].image;
-                styleDesc.innerHTML = styleData[styleKey].desc;
-                
-                styleImage.style.opacity = 1;
-                styleImage.style.transform = "scale(1) translateY(0)";
-            }, 300);
+            switchStyle(option);
+            startStyleTimer(); // Reset timer on manual selection
         });
     });
+
+    // Pause auto-cycle on hover
+    const styleContainer = document.querySelector('.style-configurator-widget').closest('.service-block');
+    if (styleContainer) {
+        styleContainer.addEventListener('mouseenter', () => clearInterval(styleInterval));
+        styleContainer.addEventListener('mouseleave', () => startStyleTimer());
+    }
+
+    startStyleTimer();
 
     // --- PLAN APPROVALS - PLAN TOGGLE ---
     const planTabs = document.querySelectorAll('.plan-tab');
@@ -258,28 +306,52 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    function switchPlan(tab) {
+        const planKey = tab.getAttribute('data-plan');
+        
+        // Toggle Active Tab class
+        planTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        
+        // Fluid Transition on details & image swap
+        planImage.style.opacity = 0;
+        planImage.style.transform = "scale(0.96) rotate(1deg)";
+        
+        setTimeout(() => {
+            planImage.src = planData[planKey].image;
+            planTitle.textContent = planData[planKey].title;
+            planDesc.textContent = planData[planKey].desc;
+            
+            planImage.style.opacity = 1;
+            planImage.style.transform = "scale(1) rotate(0)";
+        }, 300);
+    }
+
+    let planInterval;
+    function startPlanTimer() {
+        clearInterval(planInterval);
+        planInterval = setInterval(() => {
+            let activeIdx = Array.from(planTabs).findIndex(t => t.classList.contains('active'));
+            let nextIdx = (activeIdx + 1) % planTabs.length;
+            switchPlan(planTabs[nextIdx]);
+        }, 3000);
+    }
+
     planTabs.forEach(tab => {
         tab.addEventListener('click', () => {
-            const planKey = tab.getAttribute('data-plan');
-            
-            // Toggle Active Tab class
-            planTabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            
-            // Fluid Transition on details & image swap
-            planImage.style.opacity = 0;
-            planImage.style.transform = "scale(0.96) rotate(1deg)";
-            
-            setTimeout(() => {
-                planImage.src = planData[planKey].image;
-                planTitle.textContent = planData[planKey].title;
-                planDesc.textContent = planData[planKey].desc;
-                
-                planImage.style.opacity = 1;
-                planImage.style.transform = "scale(1) rotate(0)";
-            }, 300);
+            switchPlan(tab);
+            startPlanTimer(); // Reset timer on manual selection
         });
     });
+
+    // Pause auto-cycle on hover
+    const planContainer = document.querySelector('.plan-toggle-widget').closest('.service-block');
+    if (planContainer) {
+        planContainer.addEventListener('mouseenter', () => clearInterval(planInterval));
+        planContainer.addEventListener('mouseleave', () => startPlanTimer());
+    }
+
+    startPlanTimer();
 
     // --- VR WALKTHROUGH MEDIA SIMULATION POPUP ---
     const videoTrigger = document.getElementById('videoTrigger');
