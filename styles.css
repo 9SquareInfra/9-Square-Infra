@@ -2335,7 +2335,7 @@ button, input, select, textarea {
     position: absolute;
     right: 75px;
     background-color: #10141a;
-    color: var(--text-primary);
+    color: #ffffff !important;
     border: 1px solid var(--border-glass-light);
     padding: 0.5rem 1rem;
     border-radius: 8px;
