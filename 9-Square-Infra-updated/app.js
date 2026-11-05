@@ -1,0 +1,815 @@
+/* 
+   ==========================================================================
+   9 SQUARE INFRA - CLIENT LOGIC & DYNAMICS
+   ==========================================================================
+   Description: Orchestrating premium architectural visual interactive systems,
+                mathematical calculation models, and immersive modal players.
+   ==========================================================================
+*/
+
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // --- NAVBAR GLOW ON SCROLL ---
+    const navbar = document.querySelector('.navbar');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+
+    // --- MOBILE HAMBURGER MENU ---
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const navMenu = document.getElementById('navMenu');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    hamburgerBtn.addEventListener('click', () => {
+        hamburgerBtn.classList.toggle('active');
+        navMenu.classList.toggle('active');
+    });
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            hamburgerBtn.classList.remove('active');
+            navMenu.classList.remove('active');
+            
+            // Set active class
+            navLinks.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+        });
+    });
+
+    // --- HERO TYPEWRITER EFFECT ---
+    const typewriterElement = document.getElementById('typewriter');
+    const phrases = ["3D Elevations", "Interior Designs", "3D Room Designs", "3D Walkthroughs"];
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let typingSpeed = 100;
+
+    function handleTypewriter() {
+        const currentPhrase = phrases[phraseIndex];
+        
+        if (isDeleting) {
+            typewriterElement.textContent = currentPhrase.substring(0, charIndex - 1);
+            charIndex--;
+            typingSpeed = 50; // Deletes faster
+        } else {
+            typewriterElement.textContent = currentPhrase.substring(0, charIndex + 1);
+            charIndex++;
+            typingSpeed = 100; // Normal typing speed
+        }
+
+        if (!isDeleting && charIndex === currentPhrase.length) {
+            isDeleting = true;
+            typingSpeed = 2000; // Pause at complete word
+        } else if (isDeleting && charIndex === 0) {
+            isDeleting = false;
+            phraseIndex = (phraseIndex + 1) % phrases.length;
+            typingSpeed = 500; // Pause before typing next word
+        }
+
+        setTimeout(handleTypewriter, typingSpeed);
+    }
+
+    handleTypewriter();
+
+    // --- INTERACTIVE 9 SQUARE CARD FLIPS FOR MOBILE ---
+    // On desktops, CSS hover handles flips. On touch devices, click triggers flips.
+    const sqCards = document.querySelectorAll('.sq-card:not(.core-square)');
+    sqCards.forEach(card => {
+        card.addEventListener('click', (e) => {
+            // Check if card is already flipped
+            const isFlipped = card.classList.contains('flipped');
+            
+            // Reset all cards
+            sqCards.forEach(c => c.classList.remove('flipped'));
+            
+            if (!isFlipped) {
+                card.classList.add('flipped');
+            }
+        });
+    });
+
+    // --- INTERIORS 3D PLANS - ROOM SELECTOR ---
+    const roomTabs = document.querySelectorAll('.room-tab');
+    const roomImage = document.getElementById('roomImage');
+    const roomTitle = document.getElementById('roomTitle');
+    const roomDesc = document.getElementById('roomDesc');
+
+    const roomData = {
+        living: {
+            title: "Luxury Living Room Plan",
+            desc: "Includes an expansive layout containing premium seating spaces, custom entertainment units, floor-to-ceiling glass patio connectivity, and detailed zoning for architectural light pathways.",
+            image: "assets/images/plan_living.png"
+        },
+        bedroom: {
+            title: "Premium Master Bedroom Plan",
+            desc: "Highlights optimized closet wall alignments, cozy bedroom lounge positioning, architectural direct/indirect ambient ceiling slots, and dynamic bed-facing sightlines.",
+            image: "assets/images/plan_bedroom.png"
+        },
+        kitchen: {
+            title: "Ultra-Modern Modular Kitchen Plan",
+            desc: "Features an ergonomically aligned work triangle (sink, hob, fridge), a luxury central preparation island with custom marble bar counters, and hidden sleek pantry units.",
+            image: "assets/images/plan_kitchen.png"
+        }
+    };
+
+    function switchRoom(tab) {
+        const roomKey = tab.getAttribute('data-room');
+        
+        // Toggle Active Tab class
+        roomTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        
+        // Fluid Transition on details & image swap
+        roomImage.style.opacity = 0;
+        roomImage.style.transform = "scale(0.96) rotate(-2deg)";
+        
+        setTimeout(() => {
+            roomImage.src = roomData[roomKey].image;
+            roomTitle.textContent = roomData[roomKey].title;
+            roomDesc.textContent = roomData[roomKey].desc;
+            
+            roomImage.style.opacity = 1;
+            roomImage.style.transform = "scale(1) rotate(0)";
+        }, 300);
+    }
+
+    // Helper to force-reset active tab progress bar animation
+    function resetTabProgressAnimation(container) {
+        const activeTab = container.querySelector('.active');
+        if (activeTab) {
+            const bar = activeTab.querySelector('.tab-progress-bar');
+            if (bar) {
+                bar.style.animation = 'none';
+                bar.offsetHeight; /* trigger reflow */
+                bar.style.animation = '';
+            }
+        }
+    }
+
+    let roomInterval;
+    function startRoomTimer() {
+        clearInterval(roomInterval);
+        roomInterval = setInterval(() => {
+            let activeIdx = Array.from(roomTabs).findIndex(t => t.classList.contains('active'));
+            let nextIdx = (activeIdx + 1) % roomTabs.length;
+            switchRoom(roomTabs[nextIdx]);
+        }, 3000);
+    }
+
+    roomTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            switchRoom(tab);
+            startRoomTimer(); // Reset timer on manual selection
+        });
+    });
+
+    // Pause auto-cycle on hover
+    const roomContainer = document.querySelector('.room-selector-widget').closest('.service-block');
+    if (roomContainer) {
+        roomContainer.addEventListener('mouseenter', () => clearInterval(roomInterval));
+        roomContainer.addEventListener('mouseleave', () => {
+            startRoomTimer();
+            resetTabProgressAnimation(roomContainer);
+        });
+    }
+
+    startRoomTimer();
+
+    // --- 3D ELEVATIONS - DAY-TO-NIGHT TWILIGHT SLIDER ---
+    const sliderContainer = document.getElementById('sliderContainer');
+    const nightImagePane = document.getElementById('nightImagePane');
+    const sliderDivider = document.getElementById('sliderDivider');
+    let isDragging = false;
+
+    function moveSlider(clientX) {
+        const containerRect = sliderContainer.getBoundingClientRect();
+        const containerWidth = containerRect.width;
+        let relativeX = clientX - containerRect.left;
+        
+        // Safety bounds
+        if (relativeX < 0) relativeX = 0;
+        if (relativeX > containerWidth) relativeX = containerWidth;
+        
+        // Convert to percentage
+        const percent = (relativeX / containerWidth) * 100;
+        
+        // Update clipping layout
+        // In the HTML, the night image overlaps, so width controls the split boundary
+        nightImagePane.style.width = `${100 - percent}%`;
+        sliderDivider.style.left = `${percent}%`;
+    }
+
+    // Event listeners for dragging
+    sliderContainer.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        moveSlider(e.clientX);
+    });
+
+    window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        moveSlider(e.clientX);
+    });
+
+    window.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
+
+    // Mobile Touch Gesture Support
+    sliderContainer.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        if (e.touches[0]) {
+            moveSlider(e.touches[0].clientX);
+        }
+    });
+
+    window.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        if (e.touches[0]) {
+            moveSlider(e.touches[0].clientX);
+        }
+    });
+
+    window.addEventListener('touchend', () => {
+        isDragging = false;
+    });
+
+    // --- 3D DESIGNS - ROOM STYLE CONFIGURATOR ---
+    const styleOptions = document.querySelectorAll('.style-opt');
+    const styleImage = document.getElementById('styleImage');
+    const styleDesc = document.getElementById('styleDesc');
+
+    const styleData = {
+        modern: {
+            desc: "<strong>Modern Luxury Theme:</strong> Features deep emerald green custom velvet trims, detailed luxury gold/brass profiles, and premium polished white marble tiling with deep grey veins.",
+            image: "assets/images/style_modern.png"
+        },
+        scandi: {
+            desc: "<strong>Scandinavian Minimalist:</strong> Emphasizes light Scandinavian oak timber coatings, textured warm cream-colored linen fibers, cozy houseplants, and clean, natural bright light exposures.",
+            image: "assets/images/style_scandi.png"
+        },
+        industrial: {
+            desc: "<strong>Industrial Sleek:</strong> Highlights raw, hand-plastered grey concrete textured walls, exposed dark brick structures, black iron frameworks, and glowing hanging filament bulbs.",
+            image: "assets/images/style_industrial.png"
+        }
+    };
+
+    function switchStyle(option) {
+        const styleKey = option.getAttribute('data-style');
+        
+        // Toggle active option class
+        styleOptions.forEach(opt => opt.classList.remove('active'));
+        option.classList.add('active');
+        
+        // Transition swap visual images
+        styleImage.style.opacity = 0;
+        styleImage.style.transform = "scale(1.05) translateY(-5px)";
+        
+        setTimeout(() => {
+            styleImage.src = styleData[styleKey].image;
+            styleDesc.innerHTML = styleData[styleKey].desc;
+            
+            styleImage.style.opacity = 1;
+            styleImage.style.transform = "scale(1) translateY(0)";
+        }, 300);
+    }
+
+    let styleInterval;
+    function startStyleTimer() {
+        clearInterval(styleInterval);
+        styleInterval = setInterval(() => {
+            let activeIdx = Array.from(styleOptions).findIndex(opt => opt.classList.contains('active'));
+            let nextIdx = (activeIdx + 1) % styleOptions.length;
+            switchStyle(styleOptions[nextIdx]);
+        }, 3000);
+    }
+
+    styleOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            switchStyle(option);
+            startStyleTimer(); // Reset timer on manual selection
+        });
+    });
+
+    // Pause auto-cycle on hover
+    const styleContainer = document.querySelector('.style-configurator-widget').closest('.service-block');
+    if (styleContainer) {
+        styleContainer.addEventListener('mouseenter', () => clearInterval(styleInterval));
+        styleContainer.addEventListener('mouseleave', () => {
+            startStyleTimer();
+            resetTabProgressAnimation(styleContainer);
+        });
+    }
+
+    startStyleTimer();
+
+    // --- PLAN APPROVALS - PLAN TOGGLE ---
+    const planTabs = document.querySelectorAll('.plan-tab');
+    const planImage = document.getElementById('planImage');
+    const planTitle = document.getElementById('planTitle');
+    const planDesc = document.getElementById('planDesc');
+
+    const planData = {
+        draft: {
+            title: "Standard 2D Floor Plan Draft",
+            desc: "High-accuracy dimensional grid drafts showcasing room measurements, door/window openings, wall thicknesses, and furniture layouts.",
+            image: "assets/images/plan_2d.png"
+        },
+        approval: {
+            title: "Official Plan Approval Sanction",
+            desc: "Municipal-ready blueprint sheets complete with site plans, key maps, structural specifications, and zoning compliance layouts.",
+            image: "assets/images/plan_approvals.png"
+        }
+    };
+
+    function switchPlan(tab) {
+        const planKey = tab.getAttribute('data-plan');
+        
+        // Toggle Active Tab class
+        planTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        
+        // Fluid Transition on details & image swap
+        planImage.style.opacity = 0;
+        planImage.style.transform = "scale(0.96) rotate(1deg)";
+        
+        setTimeout(() => {
+            planImage.src = planData[planKey].image;
+            planTitle.textContent = planData[planKey].title;
+            planDesc.textContent = planData[planKey].desc;
+            
+            planImage.style.opacity = 1;
+            planImage.style.transform = "scale(1) rotate(0)";
+        }, 300);
+    }
+
+    let planInterval;
+    function startPlanTimer() {
+        clearInterval(planInterval);
+        planInterval = setInterval(() => {
+            let activeIdx = Array.from(planTabs).findIndex(t => t.classList.contains('active'));
+            let nextIdx = (activeIdx + 1) % planTabs.length;
+            switchPlan(planTabs[nextIdx]);
+        }, 3000);
+    }
+
+    planTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            switchPlan(tab);
+            startPlanTimer(); // Reset timer on manual selection
+        });
+    });
+
+    // Pause auto-cycle on hover
+    const planContainer = document.querySelector('.plan-toggle-widget').closest('.service-block');
+    if (planContainer) {
+        planContainer.addEventListener('mouseenter', () => clearInterval(planInterval));
+        planContainer.addEventListener('mouseleave', () => {
+            startPlanTimer();
+            resetTabProgressAnimation(planContainer);
+        });
+    }
+
+    startPlanTimer();
+
+    // --- VR WALKTHROUGH MEDIA SIMULATION POPUP ---
+    const videoTrigger = document.getElementById('videoTrigger');
+    const videoModal = document.getElementById('videoModal');
+    const modalClose = document.getElementById('modalClose');
+    const simPlayBtn = document.getElementById('simPlayBtn');
+    const simScreen = document.getElementById('simScreen');
+    
+    const ctrlPlay = document.getElementById('ctrlPlay');
+    const ctrlSceneSwap = document.getElementById('ctrlSceneSwap');
+    const timelineFill = document.getElementById('timelineFill');
+    const timeReadout = document.getElementById('timeReadout');
+    
+    const simScenes = document.querySelectorAll('.sim-scene');
+    
+    let isPlaying = false;
+    let simTimer = null;
+    let currentSceneIdx = 0;
+    let currentDuration = 0; // seconds
+    const totalDuration = 15;
+
+    // Modal Triggers
+    videoTrigger.addEventListener('click', () => {
+        videoModal.classList.add('active');
+    });
+
+    modalClose.addEventListener('click', () => {
+        videoModal.classList.remove('active');
+        pauseWalkthrough();
+    });
+
+    videoModal.addEventListener('click', (e) => {
+        if (e.target === videoModal) {
+            videoModal.classList.remove('active');
+            pauseWalkthrough();
+        }
+    });
+
+    // Play/Pause Core Actions
+    function startWalkthrough() {
+        isPlaying = true;
+        simPlayBtn.style.opacity = 0;
+        simPlayBtn.style.pointerEvents = 'none';
+        ctrlPlay.innerHTML = '<i class="fa-solid fa-pause"></i>';
+        
+        // Zoom-in moving camera simulated effect
+        simScenes[currentSceneIdx].classList.add('playing');
+        
+        simTimer = setInterval(() => {
+            currentDuration += 0.1;
+            
+            // Sync timeline fill
+            const pct = (currentDuration / totalDuration) * 100;
+            timelineFill.style.width = `${pct}%`;
+            
+            // Sync timer clock
+            const secs = Math.floor(currentDuration);
+            timeReadout.textContent = `0:${secs < 10 ? '0' : ''}${secs} / 0:15`;
+            
+            // Auto swap scenes every 5 seconds
+            if (secs > 0 && secs % 5 === 0 && Math.abs(currentDuration - secs) < 0.05) {
+                nextWalkthroughScene();
+            }
+            
+            // Completed play paths
+            if (currentDuration >= totalDuration) {
+                pauseWalkthrough();
+                resetWalkthrough();
+            }
+        }, 100);
+    }
+
+    function pauseWalkthrough() {
+        isPlaying = false;
+        simPlayBtn.style.opacity = 1;
+        simPlayBtn.style.pointerEvents = 'auto';
+        ctrlPlay.innerHTML = '<i class="fa-solid fa-play"></i>';
+        clearInterval(simTimer);
+        
+        // Halt zooms
+        simScenes.forEach(sc => sc.classList.remove('playing'));
+    }
+
+    function resetWalkthrough() {
+        currentDuration = 0;
+        currentSceneIdx = 0;
+        timelineFill.style.width = '0%';
+        timeReadout.textContent = '0:00 / 0:15';
+        
+        simScenes.forEach((sc, idx) => {
+            sc.classList.remove('active', 'playing');
+            if (idx === 0) sc.classList.add('active');
+        });
+    }
+
+    function nextWalkthroughScene() {
+        simScenes[currentSceneIdx].classList.remove('active', 'playing');
+        
+        currentSceneIdx = (currentSceneIdx + 1) % simScenes.length;
+        simScenes[currentSceneIdx].classList.add('active');
+        
+        if (isPlaying) {
+            simScenes[currentSceneIdx].classList.add('playing');
+        }
+    }
+
+    simScreen.addEventListener('click', () => {
+        if (!isPlaying) {
+            startWalkthrough();
+        } else {
+            pauseWalkthrough();
+        }
+    });
+
+    ctrlPlay.addEventListener('click', () => {
+        if (!isPlaying) {
+            startWalkthrough();
+        } else {
+            pauseWalkthrough();
+        }
+    });
+
+    ctrlSceneSwap.addEventListener('click', nextWalkthroughScene);
+
+    // --- FORM VALIDATION & HIGH-END CONSULTATION SUCCESS MODAL ---
+    // Lead capture endpoint (Google Apps Script Web App). See SETUP.md / apps-script/Code.gs.
+    // Paste the deployed Web App URL between the quotes. Leave empty to skip server save.
+    const LEAD_CAPTURE_URL = ""; // <-- PASTE APPS SCRIPT WEB APP URL HERE
+
+    const consultForm = document.getElementById('consultationForm');
+    const clientName = document.getElementById('clientName');
+    const clientPhone = document.getElementById('clientPhone');
+    const clientEmail = document.getElementById('clientEmail');
+    const projectTypeSelect = document.getElementById('projectType');
+    const projectServiceSelect = document.getElementById('projectService');
+    const projectRequirementsTextarea = document.getElementById('projectRequirements');
+    
+    const nameError = document.getElementById('nameError');
+    const phoneError = document.getElementById('phoneError');
+    const emailError = document.getElementById('emailError');
+    const serviceError = document.getElementById('serviceError');
+    
+    const successModal = document.getElementById('successModal');
+    const successMessage = document.getElementById('successMessage');
+    const successCloseBtn = document.getElementById('successCloseBtn');
+    
+    const summaryProp = document.getElementById('summaryProp');
+    const summaryService = document.getElementById('summaryService');
+
+    // Validation patterns
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^[+]?[0-9\s-]{9,15}$/;
+
+    function validateField(input, errorElement, validationFn) {
+        const parent = input.closest('.form-group');
+        const isValid = validationFn(input.value.trim());
+        
+        if (!isValid) {
+            parent.classList.add('invalid');
+        } else {
+            parent.classList.remove('invalid');
+        }
+        
+        return isValid;
+    }
+
+    // Live validation triggers
+    clientName.addEventListener('blur', () => {
+        validateField(clientName, nameError, val => val.length > 0);
+    });
+
+    clientPhone.addEventListener('blur', () => {
+        validateField(clientPhone, phoneError, val => phoneRegex.test(val));
+    });
+
+    clientEmail.addEventListener('blur', () => {
+        validateField(clientEmail, emailError, val => emailRegex.test(val));
+    });
+
+    projectServiceSelect.addEventListener('change', () => {
+        validateField(projectServiceSelect, serviceError, val => val !== "");
+    });
+
+    consultForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        // Run general forms audit
+        const isNameValid = validateField(clientName, nameError, val => val.length > 0);
+        const isPhoneValid = validateField(clientPhone, phoneError, val => phoneRegex.test(val));
+        const isEmailValid = validateField(clientEmail, emailError, val => emailRegex.test(val));
+        const isServiceValid = validateField(projectServiceSelect, serviceError, val => val !== "");
+
+        if (isNameValid && isPhoneValid && isEmailValid && isServiceValid) {
+            // Populate success screen services summary
+            summaryProp.textContent = projectTypeSelect.options[projectTypeSelect.selectedIndex].text;
+            summaryService.textContent = projectServiceSelect.options[projectServiceSelect.selectedIndex].text;
+            
+            // Format success custom message
+            successMessage.innerHTML = `Thank you! Our team will contact you on <strong>${clientPhone.value.trim()}</strong> within the next 12–24 hours.`;
+            
+            // Open Success Screen Modal
+            successModal.classList.add('active');
+            
+            // WhatsApp Click to Chat Redirection
+            const primaryNumber = "919948699399";
+            let messageText = `*New Inquiry - 9 Square Infra*\n\n`;
+            messageText += `*Client Name:* ${clientName.value.trim()}\n`;
+            messageText += `*Phone:* ${clientPhone.value.trim()}\n`;
+            messageText += `*Email:* ${clientEmail.value.trim()}\n`;
+            messageText += `*Property Category:* ${projectTypeSelect.options[projectTypeSelect.selectedIndex].text}\n`;
+            messageText += `*Service Requested:* ${projectServiceSelect.options[projectServiceSelect.selectedIndex].text}\n\n`;
+            
+            if (projectRequirementsTextarea.value.trim()) {
+                messageText += `*Requirements / Notes:*\n${projectRequirementsTextarea.value.trim()}\n`;
+            }
+            
+            const whatsAppUrl = `https://wa.me/${primaryNumber}?text=${encodeURIComponent(messageText)}`;
+            
+            // Leave LEAD_CAPTURE_URL empty to skip server save; WhatsApp handoff still runs.
+            const googleSheetUrl = LEAD_CAPTURE_URL;
+            
+            if (googleSheetUrl && googleSheetUrl !== "") {
+                const sheetData = {
+                    type: "consultation",
+                    timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+                    name: clientName.value.trim(),
+                    phone: clientPhone.value.trim(),
+                    email: clientEmail.value.trim(),
+                    category: projectTypeSelect.options[projectTypeSelect.selectedIndex].text,
+                    service: projectServiceSelect.options[projectServiceSelect.selectedIndex].text,
+                    requirements: projectRequirementsTextarea.value.trim() || "",
+                    budget: "N/A"
+                };
+                
+                // text/plain avoids CORS preflight; Apps Script reads e.postData.contents
+                fetch(googleSheetUrl, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: {
+                        "Content-Type": "text/plain;charset=utf-8"
+                    },
+                    body: JSON.stringify(sheetData)
+                }).catch(err => console.error("Lead save error:", err));
+            }
+            
+            window.open(whatsAppUrl, '_blank');
+            
+            // Clear all fields
+            consultForm.reset();
+            document.querySelectorAll('.form-group').forEach(grp => grp.classList.remove('invalid'));
+        }
+    });
+
+    successCloseBtn.addEventListener('click', () => {
+        successModal.classList.remove('active');
+    });
+
+    // Close on outer container clicks
+    successModal.addEventListener('click', (e) => {
+        if (e.target === successModal) {
+            successModal.classList.remove('active');
+        }
+    });
+
+
+    // --- NEWSLETTER (same Apps Script endpoint, type=newsletter) ---
+    const newsletterForm = document.getElementById('newsletterForm');
+    const newsletterEmail = document.getElementById('newsletterEmail');
+    const newsletterStatus = document.getElementById('newsletterStatus');
+
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = (newsletterEmail.value || '').trim();
+            const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            if (!emailOk) {
+                if (newsletterStatus) {
+                    newsletterStatus.hidden = false;
+                    newsletterStatus.textContent = 'Please enter a valid email address.';
+                    newsletterStatus.classList.add('is-error');
+                    newsletterStatus.classList.remove('is-ok');
+                }
+                return;
+            }
+
+            const googleSheetUrl = LEAD_CAPTURE_URL;
+
+            if (googleSheetUrl && googleSheetUrl !== "") {
+                fetch(googleSheetUrl, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify({
+                        type: "newsletter",
+                        timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+                        email: email
+                    })
+                }).catch(err => console.error("Newsletter save error:", err));
+            }
+
+            if (newsletterStatus) {
+                newsletterStatus.hidden = false;
+                newsletterStatus.textContent = 'Thanks — you are on the list.';
+                newsletterStatus.classList.add('is-ok');
+                newsletterStatus.classList.remove('is-error');
+            }
+            newsletterForm.reset();
+        });
+    }
+
+    // ==========================================================================
+    // ADDITIONAL ELEGANT INTERACTIVE LOGIC (PROPOSALS 1, 3, 4, 5)
+    // ==========================================================================
+
+    // --- 1. DYNAMICALLY INJECT TAB PROGRESS BARS ---
+    document.querySelectorAll('.room-tab, .style-opt, .plan-tab').forEach(tab => {
+        const bar = document.createElement('div');
+        bar.className = 'tab-progress-bar';
+        tab.appendChild(bar);
+    });
+
+    // --- 3. VR MODAL MODE SWITCHER & 360 PANORAMA VIEWER ---
+    const btnModeCinematic = document.getElementById('btnModeCinematic');
+    const btnModeVR = document.getElementById('btnModeVR');
+    const simCanvas = document.getElementById('simCanvas');
+    const panoramaCanvas = document.getElementById('panoramaCanvas');
+    let pnlmViewer = null;
+
+    btnModeCinematic.addEventListener('click', () => {
+        btnModeCinematic.classList.add('active');
+        btnModeVR.classList.remove('active');
+        
+        panoramaCanvas.style.display = 'none';
+        simCanvas.style.display = 'block';
+    });
+
+    btnModeVR.addEventListener('click', () => {
+        btnModeVR.classList.add('active');
+        btnModeCinematic.classList.remove('active');
+        
+        // Pause cinematic walkthrough if playing
+        pauseWalkthrough();
+        
+        simCanvas.style.display = 'none';
+        panoramaCanvas.style.display = 'block';
+        
+        // Initialize Pannellum if not already initialized
+        if (!pnlmViewer) {
+            pnlmViewer = pannellum.viewer('panoramaViewer', {
+                "type": "equirectangular",
+                "panorama": "assets/images/panorama_living.png",
+                "autoLoad": true,
+                "autoRotate": -2,
+                "compass": false,
+                "showControls": true
+            });
+        } else {
+            pnlmViewer.resize();
+        }
+    });
+
+    function resetModalMode() {
+        if (btnModeCinematic && btnModeVR && simCanvas && panoramaCanvas) {
+            btnModeCinematic.classList.add('active');
+            btnModeVR.classList.remove('active');
+            panoramaCanvas.style.display = 'none';
+            simCanvas.style.display = 'block';
+        }
+        if (pnlmViewer) {
+            pnlmViewer.destroy();
+            pnlmViewer = null;
+        }
+    }
+
+    // Hook reset into modal closure
+    modalClose.addEventListener('click', () => {
+        resetModalMode();
+    });
+    videoModal.addEventListener('click', (e) => {
+        if (e.target === videoModal) {
+            resetModalMode();
+        }
+    });
+
+    // --- 4. TWILIGHT SLIDER AUTO-SWEEPER SCROLL ANIMATION ---
+    function setSliderPosition(percent) {
+        if (nightImagePane && sliderDivider) {
+            nightImagePane.style.width = `${100 - percent}%`;
+            sliderDivider.style.left = `${percent}%`;
+        }
+    }
+
+    let hasSwept = false;
+    const sweepObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !hasSwept) {
+                hasSwept = true;
+                runSliderSweep();
+            }
+        });
+    }, { threshold: 0.3 });
+
+    if (sliderContainer) {
+        sweepObserver.observe(sliderContainer);
+    }
+
+    function runSliderSweep() {
+        let start = null;
+        const duration = 1500; // 1.5 seconds sweep
+        
+        function step(timestamp) {
+            if (!start) start = timestamp;
+            const progress = timestamp - start;
+            
+            if (progress < duration) {
+                const t = progress / duration;
+                // Sine wave sweep: center (50%) -> right (85%) -> center (50%) -> left (15%) -> center (50%)
+                const percent = 50 + 35 * Math.sin(2 * Math.PI * t);
+                setSliderPosition(percent);
+                requestAnimationFrame(step);
+            } else {
+                setSliderPosition(50); // Reset to center
+            }
+        }
+        requestAnimationFrame(step);
+    }
+
+    // --- 5. PHILOSOPHY GRID SPOTLIGHT MOUSE GLOW ---
+    const philosophyCards = document.querySelectorAll('.sq-card');
+    philosophyCards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            card.style.setProperty('--mouse-x', `${x}px`);
+            card.style.setProperty('--mouse-y', `${y}px`);
+        });
+    });
+});

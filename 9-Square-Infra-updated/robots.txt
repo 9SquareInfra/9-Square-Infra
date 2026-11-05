@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://9squareinfra.github.io/9-Square-Infra/sitemap.xml
