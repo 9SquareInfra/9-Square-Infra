@@ -499,6 +499,10 @@ document.addEventListener('DOMContentLoaded', () => {
     ctrlSceneSwap.addEventListener('click', nextWalkthroughScene);
 
     // --- FORM VALIDATION & HIGH-END CONSULTATION SUCCESS MODAL ---
+    // Lead capture endpoint (Google Apps Script Web App). See SETUP.md / apps-script/Code.gs.
+    // Paste the deployed Web App URL between the quotes. Leave empty to skip server save.
+    const LEAD_CAPTURE_URL = ""; // <-- PASTE APPS SCRIPT WEB APP URL HERE
+
     const consultForm = document.getElementById('consultationForm');
     const clientName = document.getElementById('clientName');
     const clientPhone = document.getElementById('clientPhone');
@@ -568,8 +572,7 @@ document.addEventListener('DOMContentLoaded', () => {
             summaryService.textContent = projectServiceSelect.options[projectServiceSelect.selectedIndex].text;
             
             // Format success custom message
-            const firstName = clientName.value.trim().split(' ')[0];
-            successMessage.innerHTML = `Thank you, <strong>${firstName}</strong>. Our lead structural visualization engineer will contact you on <strong>${clientPhone.value.trim()}</strong> within the next 12-24 hours with custom design options.`;
+            successMessage.innerHTML = `Thank you! Our team will contact you on <strong>${clientPhone.value.trim()}</strong> within the next 12–24 hours.`;
             
             // Open Success Screen Modal
             successModal.classList.add('active');
@@ -589,28 +592,31 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const whatsAppUrl = `https://wa.me/${primaryNumber}?text=${encodeURIComponent(messageText)}`;
             
-            // Google Sheets Integration
-            const googleSheetUrl = ""; // TODO: Paste your Google Apps Script Web App URL here
+            // Leave LEAD_CAPTURE_URL empty to skip server save; WhatsApp handoff still runs.
+            const googleSheetUrl = LEAD_CAPTURE_URL;
             
             if (googleSheetUrl && googleSheetUrl !== "") {
                 const sheetData = {
+                    type: "consultation",
                     timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
                     name: clientName.value.trim(),
                     phone: clientPhone.value.trim(),
                     email: clientEmail.value.trim(),
                     category: projectTypeSelect.options[projectTypeSelect.selectedIndex].text,
-                    requirements: `Service: ${projectServiceSelect.options[projectServiceSelect.selectedIndex].text}\nNotes: ${projectRequirementsTextarea.value.trim()}`,
-                    budget: 'N/A'
+                    service: projectServiceSelect.options[projectServiceSelect.selectedIndex].text,
+                    requirements: projectRequirementsTextarea.value.trim() || "",
+                    budget: "N/A"
                 };
                 
+                // text/plain avoids CORS preflight; Apps Script reads e.postData.contents
                 fetch(googleSheetUrl, {
                     method: "POST",
                     mode: "no-cors",
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "text/plain;charset=utf-8"
                     },
                     body: JSON.stringify(sheetData)
-                }).catch(err => console.error("Google Sheets save error:", err));
+                }).catch(err => console.error("Lead save error:", err));
             }
             
             window.open(whatsAppUrl, '_blank');
@@ -631,6 +637,52 @@ document.addEventListener('DOMContentLoaded', () => {
             successModal.classList.remove('active');
         }
     });
+
+
+    // --- NEWSLETTER (same Apps Script endpoint, type=newsletter) ---
+    const newsletterForm = document.getElementById('newsletterForm');
+    const newsletterEmail = document.getElementById('newsletterEmail');
+    const newsletterStatus = document.getElementById('newsletterStatus');
+
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = (newsletterEmail.value || '').trim();
+            const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            if (!emailOk) {
+                if (newsletterStatus) {
+                    newsletterStatus.hidden = false;
+                    newsletterStatus.textContent = 'Please enter a valid email address.';
+                    newsletterStatus.classList.add('is-error');
+                    newsletterStatus.classList.remove('is-ok');
+                }
+                return;
+            }
+
+            const googleSheetUrl = LEAD_CAPTURE_URL;
+
+            if (googleSheetUrl && googleSheetUrl !== "") {
+                fetch(googleSheetUrl, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify({
+                        type: "newsletter",
+                        timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+                        email: email
+                    })
+                }).catch(err => console.error("Newsletter save error:", err));
+            }
+
+            if (newsletterStatus) {
+                newsletterStatus.hidden = false;
+                newsletterStatus.textContent = 'Thanks — you are on the list.';
+                newsletterStatus.classList.add('is-ok');
+                newsletterStatus.classList.remove('is-error');
+            }
+            newsletterForm.reset();
+        });
+    }
 
     // ==========================================================================
     // ADDITIONAL ELEGANT INTERACTIVE LOGIC (PROPOSALS 1, 3, 4, 5)
