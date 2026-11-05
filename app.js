@@ -501,7 +501,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- FORM VALIDATION & HIGH-END CONSULTATION SUCCESS MODAL ---
     // Lead capture endpoint (Google Apps Script Web App). See SETUP.md / apps-script/Code.gs.
     // Paste the deployed Web App URL between the quotes. Leave empty to skip server save.
-    const LEAD_CAPTURE_URL = ""; // <-- PASTE APPS SCRIPT WEB APP URL HERE
+    const LEAD_CAPTURE_URL = "https://script.google.com/macros/s/AKfycbwMLcU2wa27NCZMLNfbWhkHXSWicSTkSudV9cHqp6cFf2ldtcapHh9vdKNgdNE7KYDf/exec"; // <-- PASTE APPS SCRIPT WEB APP URL HERE
 
     const consultForm = document.getElementById('consultationForm');
     const clientName = document.getElementById('clientName');

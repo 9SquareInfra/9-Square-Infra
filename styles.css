@@ -307,36 +307,106 @@ button, input, select, textarea {
     transition: var(--transition-smooth);
 }
 
-/* Logo Design */
+/* Logo Design — larger mark, soft gold glow, load reveal */
 .navbar .logo {
     display: flex;
     align-items: center;
-    height: 45px;
-    width: 110px;
+    height: 56px;
+    width: 145px;
     position: relative;
-    transition: var(--transition-quick);
+    z-index: 2;
+    transition: height 0.35s ease, width 0.35s ease;
 }
 
 .navbar .brand-logo-img {
-    height: 110px;
+    height: 145px; /* ~32% larger than previous 110px */
     width: auto;
+    max-width: none;
     position: absolute;
-    top: -15px;
+    top: -36px; /* grow upward so tagline stays clear of hero content */
     left: 0;
     object-fit: contain;
-    filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.6));
     transform-origin: left center;
-    transition: var(--transition-smooth);
+    transition: height 0.35s ease, top 0.35s ease, filter 0.35s ease, transform 0.35s ease;
+    /* Soft gold glow so the mark lifts off the dark bar; slight brightness for tagline legibility */
+    filter:
+        brightness(1.08)
+        contrast(1.1)
+        drop-shadow(0 0 10px rgba(201, 160, 84, 0.5))
+        drop-shadow(0 0 24px rgba(201, 160, 84, 0.3))
+        drop-shadow(0 6px 16px rgba(0, 0, 0, 0.65));
+}
+
+.navbar.scrolled .logo {
+    height: 46px;
+    width: 105px;
 }
 
 .navbar.scrolled .brand-logo-img {
-    height: 68px;
-    top: -8px;
+    height: 92px; /* shrinks smoothly on scroll (~35% above old 68px) */
+    top: -20px;
+    filter:
+        brightness(1.05)
+        contrast(1.06)
+        drop-shadow(0 0 8px rgba(201, 160, 84, 0.35))
+        drop-shadow(0 0 16px rgba(201, 160, 84, 0.2))
+        drop-shadow(0 4px 12px rgba(0, 0, 0, 0.6));
 }
 
 .navbar .logo:hover .brand-logo-img {
-    transform: scale(1.03);
-    filter: drop-shadow(0 0 20px rgba(201, 160, 84, 0.4));
+    transform: scale(1.04);
+    filter:
+        brightness(1.08)
+        contrast(1.1)
+        drop-shadow(0 0 14px rgba(201, 160, 84, 0.55))
+        drop-shadow(0 0 28px rgba(201, 160, 84, 0.35))
+        drop-shadow(0 8px 18px rgba(0, 0, 0, 0.55));
+}
+
+/* First-load reveal (header + hero) */
+@keyframes logoRevealIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.92);
+        filter: brightness(1.06) contrast(1.08) drop-shadow(0 0 0 rgba(201, 160, 84, 0));
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.logo-reveal,
+.hero-brand-logo {
+    animation: logoRevealIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .logo-reveal,
+    .hero-brand-logo {
+        animation: none;
+    }
+}
+
+/* Large hero brand mark above the headline */
+.hero-brand {
+    display: flex;
+    align-items: center;
+    margin: 0 0 1.35rem;
+}
+
+.hero-brand-logo {
+    display: block;
+    height: clamp(130px, 18vw, 200px);
+    width: auto;
+    object-fit: contain;
+    transform-origin: left center;
+    filter:
+        brightness(1.08)
+        contrast(1.1)
+        drop-shadow(0 0 18px rgba(201, 160, 84, 0.4))
+        drop-shadow(0 0 36px rgba(201, 160, 84, 0.22))
+        drop-shadow(0 10px 28px rgba(0, 0, 0, 0.55));
 }
 
 /* Footer Logo Design */
@@ -427,6 +497,7 @@ button, input, select, textarea {
     align-items: center;
     padding-left: 10%;
     padding-right: 10%;
+    padding-top: 6.5rem; /* clear enlarged header logo */
     overflow: hidden;
 }
 
@@ -2571,18 +2642,39 @@ button, input, select, textarea {
     }
 
     .navbar .brand-logo-img {
-        height: 70px;
-        top: -5px;
+        height: 96px; /* ~37% larger than previous 70px */
+        top: -22px;
     }
     
     .navbar.scrolled .brand-logo-img {
-        height: 55px;
-        top: -2px;
+        height: 74px;
+        top: -10px;
     }
     
     .navbar .logo {
+        height: 46px;
+        width: 98px;
+    }
+
+    .navbar.scrolled .logo {
         height: 40px;
-        width: 90px;
+        width: 84px;
+    }
+
+    .hero {
+        padding-top: 8.75rem; /* clear enlarged mobile header logo */
+        min-height: 640px;
+        align-items: flex-start;
+        padding-bottom: 4rem;
+    }
+
+    .hero-brand {
+        margin-bottom: 1rem;
+        justify-content: flex-start;
+    }
+
+    .hero-brand-logo {
+        height: clamp(110px, 34vw, 150px);
     }
 
     .section-title {
